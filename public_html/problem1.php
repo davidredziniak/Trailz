@@ -7,6 +7,7 @@ function processArray($arr) {
     echo "<br>Processing Array:<br><pre>" . var_export($arr, true) . "</pre>";
     echo "<br>Odds output:<br>";
     //start edits
+    // DR475 - 05/27/24
     foreach ($arr as &$item){
         if ($item % 2 != 0){
             echo "$item ";
