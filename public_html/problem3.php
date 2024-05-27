@@ -19,7 +19,7 @@ function bePositive($arr) {
                 break;
             case "double":
             case "integer":
-                $output[$i] = abs($arr[$i]);
+                $output[$i] = $positive;
                 break;
             default:
                 //unexpected type
