@@ -7,8 +7,11 @@ function processArray($arr) {
     echo "<br>Processing Array:<br><pre>" . var_export($arr, true) . "</pre>";
     echo "<br>Odds output:<br>";
     //start edits
-    //note: use the $arr variable to iterate over, don't directly touch $a1-$a4
-    //TODO add logic here to echo out only odd values
+    foreach ($arr as &$item){
+        if ($item % 2 != 0){
+            echo "$item ";
+        }
+    }
     //end edits
 }
 echo "Problem 1: Odd Output<br>";
