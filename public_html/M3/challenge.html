@@ -8,25 +8,58 @@
         window.addEventListener("load", () => {
             console.log("loaded via javascript");
             //TODO: add any extra onload processing you may need here
+            // Query all 'nav a' objects
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                // assign a function that fires upon clicking
+                link.addEventListener('click', (event) => getCurrentSelection(event));
+            });
         });
-        function getCurrentSelection() {
+        function getCurrentSelection(event) {
             setTimeout(() => {
                 //added this delay here as some solutions may require it to update properly (i.e., click code may complete before the navigation changes)
-                //TODO: add code for processing the current selection 
-
-                //Note: likely you'll want to call updateCurrentPage towards the end
+                //TODO: add code for processing the current selection
+                let linkText = event.target.textContent;
+                updateCurrentPage(linkText);
             }, 100);
         }
     </script>
     <style>
         /* TODO: make edits here */
+
+        nav a:hover {
+            color: green;
+        }
+
+        nav a {
+            color: white;
+            text-transform: capitalize;
+        }
+
+        nav ul li {
+            float: left;
+            margin-left: 20px;
+            background-color: #423d3d;
+        }
+
+        h1::first-letter {
+            text-transform: uppercase;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        ul li:before {
+            content: '✓';
+        }
     </style>
     <!-- make the necessary edits above this line -->
 
 
     <!-- Do not edit anything below this line, doing so will lose points-->
     <script src="https://it202-spring-22.herokuapp.com/M3/problem1.js">
-            //Don't edit anything in this tag and do not delete it
+        //Don't edit anything in this tag and do not delete it
     </script>
 </head>
 <!-- Do not edit anything below this line, doing so will lose points-->
