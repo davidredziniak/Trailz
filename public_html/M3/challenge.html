@@ -27,19 +27,25 @@
     <style>
         /* TODO: make edits here */
 
+        nav a {
+            color: black;
+            text-transform: capitalize;
+        }
+
         nav a:hover {
             color: green;
         }
 
-        nav a {
-            color: white;
-            text-transform: capitalize;
+        nav ul {
+            width: 30%;
+            list-style-type: none;
+            background-color: gray;
+            display: inline-flex;
         }
 
         nav ul li {
             float: left;
             margin-left: 20px;
-            background-color: #423d3d;
         }
 
         h1::first-letter {
@@ -47,11 +53,7 @@
         }
 
         ul {
-            list-style-type: none;
-        }
-
-        ul li:before {
-            content: '✓';
+            list-style-type: "✓";
         }
     </style>
     <!-- make the necessary edits above this line -->
