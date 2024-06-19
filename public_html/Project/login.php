@@ -14,7 +14,7 @@ require(__DIR__ . "/../../partials/nav.php");
         <label for="confirm">Confirm</label>
         <input type="password" name="confirm" required minlength="8" />
     </div>
-    <input type="submit" value="Register" />
+    <input type="submit" value="Login" />
 </form>
 <script>
     function validate(form) {
@@ -69,15 +69,29 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
     if (!$hasError) {
         echo "Welcome, $email";
         //TODO 4
-        $hash = password_hash($password, PASSWORD_BCRYPT);
         $db = getDB();
-        $stmt = $db->prepare("INSERT INTO Users (email, password) VALUES (:email, :password)");
+        $stmt = $db->prepare("SELECT email, password FROM users where email = :email");
         try {
-            $stmt->execute([":email"=>$email, ":password"=>$hash]);
-            echo "Successfully registered.";
-        } catch (Exception $err){
-            echo "There was a problem registering.";
-            "<pre>" . var_export($e, true) . "</pre>";
+            $r = $stmt->execute([":email" => $email]);
+            if($r){
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                if ($user){
+                    $hash = $user["password"];
+                    unset($user["password"]);
+
+                    if(password_verify($password, $hash)){
+                        echo "Welcome $email";
+                        $_SESSION["user"] = $user;
+                        die(header("Location: home.php"));
+                    } else {
+                        echo "Invalid password.";
+                    }
+                } else {
+                    echo "Email not found";
+                }
+            }
+        } catch (Exception $e){
+            echo '<pre>' . var_export($e, true) . "</pre>";
         }
     }
 }
