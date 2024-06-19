@@ -43,7 +43,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         flash("password must not be empty");
         $hasError = true;
     }
-    if (strlen($password) < 8) {
+    if (!is_valid_password($password)) {
         flash("Password too short");
         $hasError = true;
     }
