@@ -44,7 +44,11 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
     //sanitize
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
     //validate
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    /*if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo "Invalid email address";
+        $hasError = true;
+    }*/
+    if(!is_valid_email($email)){
         echo "Invalid email address";
         $hasError = true;
     }
