@@ -38,6 +38,7 @@ function processCars($cars) {
         $processedCars[$i]["id"] = $cars[$i]["id"];
         $processedCars[$i]["make"] = $cars[$i]["make"];
         $processedCars[$i]["model"] = $cars[$i]["model"];
+        $processedCars[$i]["year"] = $cars[$i]["year"];
         $age = $currentYear - intval($cars[$i]["year"]);
         $processedCars[$i]["age"] = $age;
         $processedCars[$i]["isClassic"] = false;
