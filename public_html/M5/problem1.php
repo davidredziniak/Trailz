@@ -27,6 +27,8 @@ function processBirds($birds) {
     // TODO add logic here to create a new array with only name, color, and region
     $subset = []; // result array
     // Start edits
+    // UCID: dr475
+    // Date: 06/23/24
     $i = 0;
     for ($i = 0; $i < count($birds); $i++){
         $subset[$i]["name"] = $birds[$i]["name"];
