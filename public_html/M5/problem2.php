@@ -32,13 +32,11 @@ function processCars($cars) {
     // UCID: dr475
     // Date: 06/23/24
     $currentYear = intval(date("Y"));
-    echo $currentYear;
     $i = 0;
     for ($i = 0; $i < count($cars); $i++){
-        $processedCars[$i]["id"] = $cars[$i]["id"];
-        $processedCars[$i]["make"] = $cars[$i]["make"];
-        $processedCars[$i]["model"] = $cars[$i]["model"];
-        $processedCars[$i]["year"] = $cars[$i]["year"];
+        // Copy array
+        $processedCars[$i] = $cars[$i];
+        // Calculate age of the car
         $age = $currentYear - intval($cars[$i]["year"]);
         $processedCars[$i]["age"] = $age;
         $processedCars[$i]["isClassic"] = false;
