@@ -19,4 +19,6 @@ require(__DIR__ . "/flash_messages.php");
 require(__DIR__ . "/duplicate_user_details.php");
 //reset session
 require(__DIR__ . "/reset_session.php");
+
+require(__DIR__ . "/get_url.php");
 ?>
