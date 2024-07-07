@@ -18,19 +18,20 @@ require(__DIR__ . "/../../partials/nav.php");
 
         // Check if email or username is empty
         if (emailOrUser === ""){
-            console.log("[Client]: Email/Username field cannot be empty.");
+            alert("[Client]: Email/Username field cannot be empty.");
             return false;
         }
 
         // If email, check if email is valid using regex
         if (emailOrUser.includes("@")){
             if (!/^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(emailOrUser)){
-            console.log("[Client]: " + emailOrUser + " is invalid.")
-            return false;
+                alert("[Client]: " + emailOrUser + " is invalid.")
+                return false;
+            }
         } else {
             // Username validation
             if (!/^[a-z0-9_-]{3,30}$/.test(emailOrUser)){
-                console.log("[Client]: Username must be 3-30 characters and contain valid characters (a-z, 0-9, _, or -)");
+                alert("[Client]: Username must be 3-30 characters and contain valid characters (a-z, 0-9, _, or -)");
                 return false;
             }
         }
@@ -39,13 +40,13 @@ require(__DIR__ . "/../../partials/nav.php");
 
         // Check if password is empty
         if (pass === ""){
-            console.log("[Client]: Password field cannot be empty.");
+            alert("[Client]: Password field cannot be empty.");
             return false;
         }
 
         // Check password length
         if (pass.length < 8){
-            console.log("[Client]: Password length cannot be less than 8 characters.");
+            alert("[Client]: Password length cannot be less than 8 characters.");
             return false;
         }
 
