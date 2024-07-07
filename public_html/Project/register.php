@@ -27,13 +27,13 @@ reset_session();
 
         // Check if email is empty
         if (email === ""){
-            console.log("[Client]: Email field cannot be empty.");
+            alert("[Client]: Email field cannot be empty.");
             return false;
         }
 
         // Check if email is valid (contains @ and valid characters)
         if (!/^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(email)){
-            console.log("[Client]: " + email + " is invalid.")
+            alert("[Client]: " + email + " is invalid.")
             return false;
         }
 
@@ -41,11 +41,11 @@ reset_session();
         
         // Check if username is empty
         if (username === ""){
-            console.log("[Client]: Username field cannot be empty.");
+            alert("[Client]: Username field cannot be empty.");
             return false;
         }
         if(!/^[a-z0-9_-]{3,30}$/.test(username)){
-            console.log("[Client]: Username must be 3-30 characters and contain valid characters (a-z, 0-9, _, or -)");
+            alert("[Client]: Username must be 3-30 characters and contain valid characters (a-z, 0-9, _, or -)");
             return false;
         }
 
@@ -54,23 +54,23 @@ reset_session();
 
         // Check if passwords are empty
         if (pass === ""){
-            console.log("[Client]: Password field cannot be empty.");
+            alert("[Client]: Password field cannot be empty.");
             return false;
         }
         if (confirmPass === ""){
-            console.log("[Client]: Confirm Password field cannot be empty.");
+            alert("[Client]: Confirm Password field cannot be empty.");
             return false;
         }
 
         // Check password lengths
         if (pass.length < 8 || confirmPass.length < 8){
-            console.log("[Client]: Password length cannot be less than 8 characters.");
+            alert("[Client]: Password length cannot be less than 8 characters.");
             return false;
         }
 
         // Check if passwords match
         if (pass !== confirmPass){
-            console.log("[Client]: Password and Confirm Password do not match.");
+            alert("[Client]: Password and Confirm Password do not match.");
             return false;
         }
         return true;
