@@ -5,11 +5,11 @@ reset_session();
 <form onsubmit="return validate(this)" method="POST">
     <div>
         <label for="email">Email</label>
-        <input type="email" name="email" required />
+        <input type="email" name="email" value="<?php echo se($_POST, "email", "", false); ?>" required />
     </div>
     <div>
         <label for="username">Username</label>
-        <input type="text" name="username" required maxlength="30" />
+        <input type="text" name="username" value="<?php echo se($_POST, "username", "", false); ?>" required maxlength="30" />
     </div>
     <div>
         <label for="pw">Password</label>
@@ -23,9 +23,56 @@ reset_session();
 </form>
 <script>
     function validate(form) {
-        //TODO 1: implement JavaScript validation
-        //ensure it returns false for an error and true for success
+        var email = document.querySelector('[name="email"]').value;
 
+        // Check if email is empty
+        if (email === ""){
+            console.log("[Client]: Email field cannot be empty.");
+            return false;
+        }
+
+        // Check if email is valid (contains @ and valid characters)
+        if (!/^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(email)){
+            console.log("[Client]: " + email + " is invalid.")
+            return false;
+        }
+
+        var username = document.querySelector('[name="username"]').value;
+        
+        // Check if username is empty
+        if (username === ""){
+            console.log("[Client]: Username field cannot be empty.");
+            return false;
+        }
+        if(!/^[a-z0-9_-]{3,30}$/.test(username)){
+            console.log("[Client]: Username must be 3-30 characters and contain valid characters (a-z, 0-9, _, or -)");
+            return false;
+        }
+
+        var pass = document.querySelector('[name="password"]').value;
+        var confirmPass = document.querySelector('[name="confirm"]').value;
+
+        // Check if passwords are empty
+        if (pass === ""){
+            console.log("[Client]: Password field cannot be empty.");
+            return false;
+        }
+        if (confirmPass === ""){
+            console.log("[Client]: Confirm Password field cannot be empty.");
+            return false;
+        }
+
+        // Check password lengths
+        if (pass.length < 8 || confirmPass.length < 8){
+            console.log("[Client]: Password length cannot be less than 8 characters.");
+            return false;
+        }
+
+        // Check if passwords match
+        if (pass !== confirmPass){
+            console.log("[Client]: Password and Confirm Password do not match.");
+            return false;
+        }
         return true;
     }
 </script>
@@ -54,7 +101,7 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
         flash("Invalid email address", "danger");
         $hasError = true;
     }
-    if (!preg_match('/^[a-z0-9_-]{3,16}$/', $username)) {
+    if (!preg_match('/^[a-z0-9_-]{3,30}$/', $username)) {
         flash("Username must only contain 3-30 characters a-z, 0-9, _, or -", "danger");
         $hasError = true;
     }
