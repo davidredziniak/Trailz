@@ -153,16 +153,18 @@ $username = get_username();
             return false;
         }
 
+        // Check if user is only changing email/username
+            if (currentPass === "" && newPass === "" && confirmNewPass === ""){
+            return true;
+        }
+        
         // Check if current password is empty (Required to edit profile)
         if (currentPass === ""){
             alert("[Client]: Current password field is required to change the password..");
             return false;
         }
         
-        // Check if user is only changing email/username
-        if (currentPass === "" && newPass === "" && confirmNewPass === ""){
-            return true;
-        }
+
 
         // Check password length (user changing password)
         if (currentPass.length < 8 || newPass.length < 8 || confirmNewPass.length < 8){
