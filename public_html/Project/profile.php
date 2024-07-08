@@ -160,7 +160,7 @@ $username = get_username();
         }
         
         // Check if user is only changing email/username
-        if (currentPass === "" && newPass.length === "" && confirmNewPass === ""){
+        if (currentPass === "" && newPass === "" && confirmNewPass === ""){
             return true;
         }
 
