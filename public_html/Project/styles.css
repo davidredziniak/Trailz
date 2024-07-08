@@ -1,5 +1,12 @@
+
+.alert {
+    padding: 5px;
+    width: 20%;
+    color: white;
+}
+
 .alert-success {
-    background-color: green
+    background-color: green;
 }
 
 .alert-warning {
@@ -13,11 +20,33 @@
 .alert-info {
     background-color: teal;
 }
-nav li{display: inline; background-color: rebeccapurple;}
-nav li a{color: hotpink}
-input{border-radius: 50%;}
-body{
-    background-color: hotpink;
-    color: rgb(153, 0, 153);
 
+h1, h2, h3,
+h4, h5, h6 {
+    color: rgb(173, 172, 175);
+}
+nav li {
+    display: inline;
+    background-color: rgb(173, 172, 175);
+    padding: 10px;
+}
+
+nav li a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+}
+
+input {
+    border-radius: 5px;
+    border: 1px solid #000;
+    background: rgb(255, 255, 255);
+}
+
+label {
+    color: rgb(255, 255, 255);
+}
+
+body {
+    background-color: rgb(58, 85, 154);
+    color: rgb(120, 115, 120);
 }
