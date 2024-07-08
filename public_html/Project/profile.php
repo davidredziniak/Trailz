@@ -1,4 +1,6 @@
 <?php
+// UCID: dr475
+// Date: 07/08/24
 require_once(__DIR__ . "/../../partials/nav.php");
 is_logged_in(true);
 ?>
@@ -156,8 +158,13 @@ $username = get_username();
             alert("[Client]: Current password field is required to change the password..");
             return false;
         }
+        
+        // Check if user is only changing email/username
+        if (currentPass === "" && newPass.length === "" && confirmNewPass === ""){
+            return true;
+        }
 
-        // Check password length
+        // Check password length (user changing password)
         if (currentPass.length < 8 || newPass.length < 8 || confirmNewPass.length < 8){
             alert("[Client]: Password lengths cannot be less than 8 characters.");
             return false;
