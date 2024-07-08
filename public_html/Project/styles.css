@@ -11,10 +11,12 @@
 
 .alert-warning {
     background-color: yellow;
+    color: black;
 }
 
 .alert-danger {
     background-color: red;
+    color: black;
 }
 
 .alert-info {
