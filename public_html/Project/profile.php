@@ -121,18 +121,69 @@ $username = get_username();
 
 <script>
     function validate(form) {
-        let pw = form.newPassword.value;
-        let con = form.confirmPassword.value;
-        let isValid = true;
-        //TODO add other client side validation....
+        let email = form.email.value;
+        let username = form.username.value;
+        let currentPass = form.currentPassword.value;
+        let newPass = form.newPassword.value;
+        let confirmNewPass = form.confirmPassword.value;
+
+        // Check if email is empty
+        if (email === ""){
+            alert("[Client]: Email field cannot be empty.");
+            return false;
+        }
+
+        // Check if username is empty
+        if (username === ""){
+            alert("[Client]: Username field cannot be empty.");
+            return false;
+        }
+
+        // If email, check if email is valid using regex
+        if (!/^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(email)){
+            alert("[Client]: " + email + " is invalid.")
+            return false;
+        }
+
+        // Username validation using regex
+        if (!/^[a-z0-9_-]{3,30}$/.test(username)){
+            alert("[Client]: Username must be 3-30 characters and contain valid characters (a-z, 0-9, _, or -)");
+            return false;
+        }
+
+        // Check if current password is empty (Required to edit profile)
+        if (currentPass === ""){
+            alert("[Client]: Current password field is required to change the password..");
+            return false;
+        }
+
+        // Check password length
+        if (currentPass.length < 8 || newPass.length < 8 || confirmNewPass.length < 8){
+            alert("[Client]: Password lengths cannot be less than 8 characters.");
+            return false;
+        }
 
         //example of using flash via javascript
         //find the flash container, create a new element, appendChild
-        if (pw !== con) {
-            flash("Password and Confrim password must match", "warning");
-            isValid = false;
+        if (newPass !== confirmNewPass) {
+            //find the container
+            let flash = document.getElementById("flash");
+            //create a div (or whatever wrapper we want)
+            let outerDiv = document.createElement("div");
+            outerDiv.className = "row justify-content-center";
+            let innerDiv = document.createElement("div");
+
+            //apply the CSS (these are bootstrap classes which we'll learn later)
+            innerDiv.className = "alert alert-warning";
+            //set the content
+            innerDiv.innerText = "Password and Confirm password must match";
+
+            outerDiv.appendChild(innerDiv);
+            //add the element to the DOM (if we don't it merely exists in memory)
+            flash.appendChild(outerDiv);
+            return false;
         }
-        return isValid;
+        return true;
     }
 </script>
 <?php
