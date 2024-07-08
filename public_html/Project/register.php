@@ -1,14 +1,15 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
+reset_session();
 ?>
 <form onsubmit="return validate(this)" method="POST">
     <div>
-        <label for="username">Username</label>
-        <input type="text" name="username" required maxlength="30" />
+        <label for="email">Email</label>
+        <input type="email" name="email" value="<?php echo se($_POST, "email", "", false); ?>" required />
     </div>
     <div>
-        <label for="email">Email</label>
-        <input id="email" type="email" name="email" required />
+        <label for="username">Username</label>
+        <input type="text" name="username" value="<?php echo se($_POST, "username", "", false); ?>" required maxlength="30" />
     </div>
     <div>
         <label for="pw">Password</label>
@@ -22,9 +23,56 @@ require(__DIR__ . "/../../partials/nav.php");
 </form>
 <script>
     function validate(form) {
-        //TODO 1: implement JavaScript validation
-        //ensure it returns false for an error and true for success
+        var email = document.querySelector('[name="email"]').value;
 
+        // Check if email is empty
+        if (email === ""){
+            alert("[Client]: Email field cannot be empty.");
+            return false;
+        }
+
+        // Check if email is valid (contains @ and valid characters)
+        if (!/^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(email)){
+            alert("[Client]: " + email + " is invalid.")
+            return false;
+        }
+
+        var username = document.querySelector('[name="username"]').value;
+        
+        // Check if username is empty
+        if (username === ""){
+            alert("[Client]: Username field cannot be empty.");
+            return false;
+        }
+        if(!/^[a-z0-9_-]{3,30}$/.test(username)){
+            alert("[Client]: Username must be 3-30 characters and contain valid characters (a-z, 0-9, _, or -)");
+            return false;
+        }
+
+        var pass = document.querySelector('[name="password"]').value;
+        var confirmPass = document.querySelector('[name="confirm"]').value;
+
+        // Check if passwords are empty
+        if (pass === ""){
+            alert("[Client]: Password field cannot be empty.");
+            return false;
+        }
+        if (confirmPass === ""){
+            alert("[Client]: Confirm Password field cannot be empty.");
+            return false;
+        }
+
+        // Check password lengths
+        if (pass.length < 8 || confirmPass.length < 8){
+            alert("[Client]: Password length cannot be less than 8 characters.");
+            return false;
+        }
+
+        // Check if passwords match
+        if (pass !== confirmPass){
+            alert("[Client]: Password and Confirm Password do not match.");
+            return false;
+        }
         return true;
     }
 </script>
@@ -33,64 +81,58 @@ require(__DIR__ . "/../../partials/nav.php");
 if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm"])) {
     $email = se($_POST, "email", "", false);
     $password = se($_POST, "password", "", false);
-    $username = se($_POST, "username", "", false);
     $confirm = se(
         $_POST,
         "confirm",
         "",
         false
     );
+    $username = se($_POST, "username", "", false);
     //TODO 3
     $hasError = false;
     if (empty($email)) {
-        echo "Email must not be empty";
+        flash("Email must not be empty", "danger");
         $hasError = true;
     }
     //sanitize
-    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    $email = sanitize_email($email);
     //validate
-    /*if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "Invalid email address";
-        $hasError = true;
-    }*/
-    if(!preg_match('/^[a-z0-9_-]{3,30}$/', $username)){
-        flash("Username must be lowercase, alphanumerical, and can only contain _ or -", "warning");
+    if (!is_valid_email($email)) {
+        flash("Invalid email address", "danger");
         $hasError = true;
     }
-    if(!is_valid_email($email)){
-        echo "Invalid email address";
+    if (!preg_match('/^[a-z0-9_-]{3,30}$/', $username)) {
+        flash("Username must only contain 3-30 characters a-z, 0-9, _, or -", "danger");
         $hasError = true;
     }
     if (empty($password)) {
-        echo "password must not be empty";
+        flash("password must not be empty", "danger");
         $hasError = true;
     }
     if (empty($confirm)) {
-        echo "Confirm password must not be empty";
+        flash("Confirm password must not be empty", "danger");
         $hasError = true;
     }
     if (strlen($password) < 8) {
-        echo "Password too short";
+        flash("Password too short", "danger");
         $hasError = true;
     }
     if (
         strlen($password) > 0 && $password !== $confirm
     ) {
-        echo "Passwords must match";
+        flash("Passwords must match", "danger");
         $hasError = true;
     }
     if (!$hasError) {
-        echo "Welcome, $email";
         //TODO 4
         $hash = password_hash($password, PASSWORD_BCRYPT);
         $db = getDB();
-        $stmt = $db->prepare("INSERT INTO Users (email, password, username) VALUES (:email, :password, :username)");
+        $stmt = $db->prepare("INSERT INTO Users (email, password, username) VALUES(:email, :password, :username)");
         try {
-            $stmt->execute([":email"=>$email, ":password"=>$hash, ":username"=>$username]);
-            echo "Successfully registered.";
-        } catch (Exception $err){
-            echo "There was a problem registering.";
-            "<pre>" . var_export($e, true) . "</pre>";
+            $stmt->execute([":email" => $email, ":password" => $hash, ":username" => $username]);
+            flash("Successfully registered!", "success");
+        } catch (Exception $e) {
+            users_check_duplicate($e->errorInfo);
         }
     }
 }
