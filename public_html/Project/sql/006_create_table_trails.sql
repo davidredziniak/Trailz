@@ -1,0 +1,19 @@
+CREATE TABLE IF NOT EXISTS `Trails` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL,
+	`description` VARCHAR(50),
+	`city` VARCHAR(50),
+	`region` VARCHAR(50),
+	`country` VARCHAR(50),
+	`lat` POINT NOT NULL,
+	`long` POINT NOT NULL,
+	`difficulty` VARCHAR(50),
+	`features` VARCHAR(50),
+	`rating` INT,
+	`thumbnail` VARCHAR(100),
+	`api_id` INT,
+  `length` VARCHAR(60) NOT NULL,
+  `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modified` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+)
