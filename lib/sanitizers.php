@@ -16,3 +16,9 @@ function is_valid_password($password)
 {
     return strlen($password) >= 8;
 }
+function is_valid_latitude($latitude){
+    return preg_match('/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$/', $latitude);
+}
+function is_valid_longtitude($longtitude){
+    return preg_match('/^[-]?([1-9]?\d(\.\d+)?|1[0-7]\d(\.\d+)?|180(\.0+)?)$/', $longtitude);
+}

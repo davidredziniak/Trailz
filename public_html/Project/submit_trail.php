@@ -11,15 +11,98 @@ if (isset($_POST["create_trail"])) {
     $desc = se($_POST, "desc", null, false);
     $city = se($_POST, "city", null, false);
     $region = se($_POST, "region", null, false);
-    $country = se($_POST, "country", null, false);
+    $country = se($_POST, "country", null, false);   
+    $difficulty = se($_POST, "difficulty", null, false);
+    $features = se($_POST, "feats", null, false);
+
     $lat = se($_POST, "lat", null, false);
     $long = se($_POST, "long", null, false);
     $length = se($_POST, "length", null, false);
-    $difficulty = se($_POST, "difficulty", null, false);
-    $features = se($_POST, "features", null, false);
     //$thumbnail = se($_POST, "thumbnail", null, false);
 
     $hasError = false;
+
+    // Validate
+    if (empty($name)){
+        flash("Name of trail must not be empty", "danger");
+        $hasError = true;
+    }
+    if (empty($desc)){
+        flash("Description of trail must not be empty", "danger");
+        $hasError = true;
+    }
+    if (empty($city)){
+        flash("City must not be empty", "danger");
+        $hasError = true;
+    }
+    if (empty($region)){
+        flash("Region/state must not be empty", "danger");
+        $hasError = true;
+    }
+    if (empty($country)){
+        flash("Country must not be empty", "danger");
+        $hasError = true;
+    }
+    if (empty($lat)){
+        flash("Latitude must not be empty", "danger");
+        $hasError = true;
+    }
+    if (empty($long)){
+        flash("Longitude must not be empty", "danger");
+        $hasError = true;
+    }
+    if (empty($length)){
+        flash("Length of trail must not be empty", "danger");
+        $hasError = true;
+    }
+    if (empty($difficulty)){
+        flash("Difficulty must not be empty", "danger");
+        $hasError = true;
+    }
+    if (empty($features)){
+        flash("Features of trail must not be empty", "danger");
+        $hasError = true;
+    }
+
+    // Check if difficulty is one of four options (Easiest, Beginner, Intermediate, Hard)
+    if ($difficulty != "easy" && $difficulty != "beg" && $difficulty != "int" && $difficulty != "hard"){
+        flash("Difficulty selection is invalid. Please select an option from the drop down.");
+        $hasError = true;
+    }
+
+    // Check if latitude is valid
+    if (!is_valid_latitude($lat)){
+        flash("Latitude is invalid. Must be between -90 to 90");
+        $hasError = true;
+    }
+
+    // Check if latitude is valid
+    if (!is_valid_longtitude($long)){
+        flash("Longitude is invalid. Must be between -180 to 180");
+        $hasError = true;
+    }
+
+    $length = floatval($length);
+    // Check if length is valid
+    if ($length <= 0){
+        flash("Length is invalid. Must be a positive number.");
+        $hasError = true;
+    }
+
+    $lat = floatval($lat);
+    $long = floatval($long);
+    echo "<pre> POINT ($lat, $long)</pre>";
+    if (!$hasError) {
+        $db = getDB();
+        $stmt = $db->prepare("INSERT INTO Trails (name, description, city, region, country, coord, length, difficulty, features) VALUES(:name, :desc, :city, :region, :country, POINT(:lat, :long), :length, :difficulty, :features)");
+        try {
+            $stmt->execute([":name" => $name, ":desc" => $desc, ":city" => $city, ":region" => $region, ":country" => $country, ":lat" => $lat, ":long" => $long, ":length" => $length, ":difficulty" => $difficulty, ":features" => $features]);
+            flash("Successfully submitted a new trail!", "success");
+        } catch (Exception $e) {
+            flash("An unexpected error occurred, please try again", "danger");
+            echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+        }
+    }
 }
 ?>
 
@@ -49,11 +132,11 @@ if (isset($_POST["create_trail"])) {
     </div>
     <div class="mb-3">
         <label for="lat">Latitude:</label>
-        <input type="number" name="lat" id="lat" />
+        <input type="text" name="lat" id="lat" />
     </div>
     <div class="mb-3">
         <label for="long">Longitude:</label>
-        <input type="number" name="long" id="long" />
+        <input type="text" name="long" id="long" />
     </div>
     <div class="mb-3">
         <label for="length">Length:</label>
@@ -74,11 +157,7 @@ if (isset($_POST["create_trail"])) {
         <label for="feats">Features:</label>
         <input type="text" name="feats" id="feats" />
     </div>
-    <div class="mb-3">
-        <label for="thumb">Thumbnail:</label>
-        <input type="text" name="thumb" id="thumb" />
-    </div>
-    <input type="submit" value="Submit Trail" name="create_trail" />
+    <input type="submit" value="Create Trail" name="create_trail" />
 </form>
 
 <script>
@@ -109,13 +188,13 @@ if (isset($_POST["create_trail"])) {
 
         // Check if latitude is valid using regex
         if (!/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$/.test(lat)) {
-            alert("Latitude is invalid.")
+            alert("Latitude is invalid. Enter a value from -90.00 to 90.00")
             return false;
         }
 
         // Check if longtitude is valid using regex
         if (!/^[-]?([1-9]?\d(\.\d+)?|1[0-7]\d(\.\d+)?|180(\.0+)?)$/i.test(long)) {
-            alert("Longitude is invalid.")
+            alert("Longitude is invalid. Enter a value from -180.00 to 180.00")
             return false;
         }
 
@@ -126,7 +205,7 @@ if (isset($_POST["create_trail"])) {
         }
 
         // Check if difficulty selection is valid
-        if (diff != "easy" || diff != "beg" || diff != "int" || diff != "hard"){
+        if (diff != "easy" && diff != "beg" && diff != "int" && diff != "hard"){
             alert("Invalid difficulty selection, please select a drop down option.");
             return false;
         }
