@@ -70,6 +70,9 @@ if (isset($_POST["create_trail"])) {
         $hasError = true;
     }
 
+    $lat = floatval($lat);
+    $long = floatval($long);
+
     // Check if latitude is valid
     if (!is_valid_latitude($lat)){
         flash("Latitude is invalid. Must be between -90 to 90");
@@ -83,14 +86,13 @@ if (isset($_POST["create_trail"])) {
     }
 
     $length = floatval($length);
+
     // Check if length is valid
     if ($length <= 0){
         flash("Length is invalid. Must be a positive number.");
         $hasError = true;
     }
 
-    $lat = floatval($lat);
-    $long = floatval($long);
     if (!$hasError) {
         $db = getDB();
         $stmt = $db->prepare("INSERT INTO Trails (name, description, city, region, country, coord, length, difficulty, features) VALUES(:name, :desc, :city, :region, :country, POINT(:lat, :long), :length, :difficulty, :features)");
@@ -99,15 +101,11 @@ if (isset($_POST["create_trail"])) {
             flash("Successfully submitted a new trail!", "success");
         } catch (Exception $e) {
             flash("An unexpected error occurred, please try again", "danger");
-            echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
         }
     }
 }
 ?>
 
-<?php
-
-?>
 <form method="POST" onsubmit="return validate(this);">
     <div class="mb-3">
         <label for="name">Name:</label>
