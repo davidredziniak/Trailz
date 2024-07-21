@@ -1,7 +1,7 @@
 ## Project Name: IT202 Trail API Project
 ### Project Summary: This project will primarily use data pull from an API to do something 
 ### Github Link: https://github.com/davidredziniak/dr475-IT202-452-M2024/tree/prod/public_html/Project/
-### Project Board Link: 
+### Project Board Link: https://github.com/users/davidredziniak/projects/2
 ### Website Link: https://it202-dr475-prod-7559be2e2ad4.herokuapp.com/Project/
 ### API Link: https://rapidapi.com/trailapi/api/trailapi
 ### Your Name: David Redziniak
