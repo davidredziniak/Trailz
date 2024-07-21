@@ -122,7 +122,7 @@ if (isset($_POST["create_trail"])) {
         <input type="text" name="city" id="city" />
     </div>
     <div class="mb-3">
-        <label for="region">Region:</label>
+        <label for="region">State/Region:</label>
         <input type="text" name="region" id="region" />
     </div>
     <div class="mb-3">
@@ -206,6 +206,32 @@ if (isset($_POST["create_trail"])) {
         // Check if difficulty selection is valid
         if (diff != "easy" && diff != "beg" && diff != "int" && diff != "hard"){
             alert("Invalid difficulty selection, please select a drop down option.");
+            return false;
+        }
+
+        // Check lengths of input for string fields
+        if (name.length > 30){
+            alert("The length of the Name field should not be greater than 30 chars.");
+            return false;
+        }
+        if (desc.length > 30){
+            alert("The length of the Description field should not be greater than 30 chars.");
+            return false;
+        }
+        if (city.length > 30){
+            alert("The length of the City field should not be greater than 30 chars.");
+            return false;
+        }
+        if (region.length > 30){
+            alert("The length of the State/Region field should not be greater than 30 chars.");
+            return false;
+        }
+        if (country.length > 30){
+            alert("The length of the Country field should not be greater than 30 chars.");
+            return false;
+        }
+        if (feats.length > 30){
+            alert("The length of the Features field should not be greater than 30 chars.");
             return false;
         }
 
