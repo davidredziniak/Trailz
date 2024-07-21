@@ -91,7 +91,6 @@ if (isset($_POST["create_trail"])) {
 
     $lat = floatval($lat);
     $long = floatval($long);
-    echo "<pre> POINT ($lat, $long)</pre>";
     if (!$hasError) {
         $db = getDB();
         $stmt = $db->prepare("INSERT INTO Trails (name, description, city, region, country, coord, length, difficulty, features) VALUES(:name, :desc, :city, :region, :country, POINT(:lat, :long), :length, :difficulty, :features)");
