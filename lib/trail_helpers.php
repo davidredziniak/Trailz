@@ -42,3 +42,21 @@ function get_trail_by_id($id)
     }
     return [];
 }
+
+function is_trail_owner($id)
+{
+    $user_id = get_user_id();
+    $db = getDB();
+    $stmt = $db->prepare("SELECT 1 FROM User_Trails WHERE trail_id=:id AND user_id=:user_id LIMIT 1;");
+    try {
+        $stmt->execute([":id" => intval($id), ":user_id" => intval($user_id)]);
+        $r = $stmt->fetchAll();
+        if($r){
+            return true;
+        }
+    } catch (Exception $e) {
+        flash(". var_export($e, true) .", "danger");
+    }
+
+    return false;
+}
