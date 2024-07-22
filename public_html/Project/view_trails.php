@@ -291,9 +291,9 @@ if (isset($_GET["find"])) {
                             <?php echo $trail['distance']; ?>
                         <?php endif; ?>
                         <a href="./trail.php?id=<?php echo $trail['id'] ?>">View</a>
-                        <?php if (has_role("Admin") || is_trail_owner($id)) : ?>
-                            <?php echo '<a href="./edit_trail.php?id=' . $id . '">Edit</a>'; ?>
-                            <?php echo '<a href="./delete_trail.php?id=' . $id . '">Delete</a>'; ?>
+                        <?php if (has_role("Admin") || is_trail_owner($trail['id'])) : ?>
+                            <?php echo '<a href="./edit_trail.php?id=' . $trail['id'] . '">Edit</a>'; ?>
+                            <?php echo '<a href="./delete_trail.php?id=' . $trail['id'] . '">Delete</a>'; ?>
                         <?php endif; ?>
                     </div>
                 <?php endforeach; ?>

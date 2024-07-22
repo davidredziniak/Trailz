@@ -24,7 +24,7 @@ $trail = get_trail_by_id($id);
         <p>Features: <?php echo $trail['features'] ?></p>
         <?php if (has_role("Admin") || is_trail_owner($id)) : ?>
             <?php echo '<a href="./edit_trail.php?id=' . $id . '">Edit</a>'; ?>
-            <?php echo '<a href="./delete_trail.php?id=' . $id . '">Delete</a>'; ?>
+            <?php echo '<a href="./delete_trail.php?id=' . $id  . '">Delete</a>'; ?>
         <?php endif; ?>
     </div>
 </div>
