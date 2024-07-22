@@ -104,7 +104,6 @@ $username = get_username();
         <label for="username">Username:</label>
         <input type="text" name="username" id="username" value="<?php se($username); ?>" />
     </div>
-    <!-- DO NOT PRELOAD PASSWORD -->
     <div><h4>Password Reset</h4></div>
     <div class="mb-3">
         <label for="cp">Current Password:</label>
