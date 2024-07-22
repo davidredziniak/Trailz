@@ -236,8 +236,8 @@ if (isset($_POST["create_trail"])) {
             alert("The length of the Name field should not be greater than 30 chars.");
             return false;
         }
-        if (desc.length > 30){
-            alert("The length of the Description field should not be greater than 30 chars.");
+        if (desc.length > 300){
+            alert("The length of the Description field should not be greater than 300 chars.");
             return false;
         }
         if (city.length > 30){
