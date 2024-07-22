@@ -103,9 +103,9 @@ if (isset($_GET["find"])) {
 
         if(!$hasError){
             $db = getDB();
-            $stmt = $db->prepare("SELECT name, city, country, length, difficulty, (3959 * acos(cos(radians(:lat)) * cos(radians(ST_X(`coord`))) * cos( radians(ST_Y(`coord`)) - radians(:long)) + sin(radians(:lat)) * sin(radians(ST_X(`coord`))))) AS distance FROM Trails HAVING distance <= :distance ORDER BY distance LIMIT :limit;");
+            $stmt = $db->prepare("SELECT name, city, country, length, difficulty, (3959 * acos(cos(radians(:lat)) * cos(radians(ST_X(`coord`))) * cos( radians(ST_Y(`coord`)) - radians(:long)) + sin(radians(:lat)) * sin(radians(ST_X(`coord`))))) AS distance FROM Trails HAVING distance <= :distance ORDER BY distance LIMIT " . intval($limit) . ";");
             try {
-                $stmt->execute([":lat" => $lat, ":long" => $long, ":distance" => $radius, ":limit" => $limit]);
+                $stmt->execute([":lat" => $lat, ":long" => $long, ":distance" => $radius]);
                 $r = $stmt->fetchAll();
                 if($r){
                     $result = $r;
@@ -276,11 +276,13 @@ if (isset($_GET["find"])) {
             <div class="row justify-content-center">
                 <?php foreach ($result as $trail) : ?>
                     <div class="col">
-                        <?php echo $trail['name'] ?>
-                        <?php echo $trail['country'] ?>
-                        <?php echo $trail['length'] ?>
-                        <?php echo $trail['difficulty'] ?>
-                        <?php echo $trail['distance'] ?>
+                        <?php echo $trail['name']; ?>
+                        <?php echo $trail['country']; ?>
+                        <?php echo $trail['length']; ?>
+                        <?php echo $trail['difficulty']; ?>
+                        <?php if (array_key_exists("distance", $trail)) : ?>
+                            <?php echo $trail['distance']; ?>
+                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             </div>
