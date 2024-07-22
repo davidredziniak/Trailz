@@ -73,13 +73,13 @@ if (isset($_POST["create_trail"])) {
 
     // Check if latitude is valid
     if (!is_valid_latitude($lat)){
-        flash("Latitude is invalid. Must be between -90 to 90");
+        flash("Latitude is invalid. Must be between -90 to 90", "danger");
         $hasError = true;
     }
 
     // Check if latitude is valid
     if (!is_valid_longtitude($long)){
-        flash("Longitude is invalid. Must be between -180 to 180");
+        flash("Longitude is invalid. Must be between -180 to 180", "danger");
         $hasError = true;
     }
 
@@ -87,7 +87,7 @@ if (isset($_POST["create_trail"])) {
 
     // Check if length is valid
     if ($length <= 0){
-        flash("Length is invalid. Must be a positive number.");
+        flash("Length is invalid. Must be a positive number.", "danger");
         $hasError = true;
     }
 
