@@ -5,17 +5,62 @@
 
 h1, h2, h3,
 h4, h5, h6 {
-    color: rgb(173, 172, 175);
-}
-nav li {
-    display: inline;
-    background-color: rgb(173, 172, 175);
-    padding: 10px;
+    color: #686969;
 }
 
-nav li a {
-    color: rgb(0, 0, 0);
+.container {
+    width: 60%;
+    margin: auto;
+}
+.header {
+    background-color: white;
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px;
+}
+
+.header .logo h2 {
+    color: #f24d25;
+}
+
+
+.header .navbar {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.header .navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.header .navbar ul li a {
     text-decoration: none;
+    color: #333333de;
+}
+
+.nav-item {
+    box-sizing: border-box;
+}
+
+.nav-item a {
+    margin-right: 0;
+    margin-left: 0;
+    padding: 20px 35px;
+}
+
+.nav-item:hover {
+    background-color: #ffd853 !important;
+}
+
+.nav-item .active {
+    background: #ffd853;
 }
 
 input {
@@ -28,7 +73,16 @@ label {
     color: rgb(255, 255, 255);
 }
 
+#menuDropdowns {
+    display: none;
+}
+
+#menuList:hover #menuDropdowns {
+    display: block;
+}
+
 body {
-    background-color: rgb(58, 85, 154);
-    color: rgb(120, 115, 120);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }

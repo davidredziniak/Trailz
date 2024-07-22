@@ -4,7 +4,7 @@ reset_session();
 ?>
 
 <body class="bg-dark">
-    <div class="container mt-5 p-5 rounded-3 w-25" style="background-color: #c5c5c5;">
+    <div class="container mt-5 p-5 rounded-2 w-25" style="background-color: #c5c5c5;">
         <form onsubmit="return validate(this)" method="POST">
             <div class="mt-3">
                 <label for="email" class="form-label">Email</label>

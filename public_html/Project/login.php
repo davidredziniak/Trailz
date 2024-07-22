@@ -3,7 +3,7 @@ require(__DIR__ . "/../../partials/nav.php");
 ?>
 
 <body class="bg-dark">
-    <div class="container mt-5 p-5 rounded-3 w-25" style="background-color: #c5c5c5;">
+    <div class="container mt-5 p-5 rounded-2 w-25" style="background-color: #c5c5c5;">
         <form onsubmit="return validate(this)" method="POST">
             <div class="mt-3">
                 <label for="email" class="form-label">Email/username:</label>
@@ -63,12 +63,10 @@ require(__DIR__ . "/../../partials/nav.php");
     }
 </script>
 <?php
-//TODO 2: add PHP Code
 if (isset($_POST["email"]) && isset($_POST["password"])) {
     $email = se($_POST, "email", "", false);
     $password = se($_POST, "password", "", false);
 
-    //TODO 3
     $hasError = false;
     if (empty($email)) {
         flash("Email must not be empty.", "warning");
@@ -79,13 +77,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     //validate
     if (str_contains($email, "@")) {
         //sanitize
-        //$email = filter_var($email, FILTER_SANITIZE_EMAIL);
         $email = sanitize_email($email);
-        //validate
-        /*if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            flash("Invalid email address");
-            $hasError = true;
-        }*/
         if (!is_valid_email($email)) {
             flash("Invalid email address.", "warning");
             $hasError = true;
@@ -105,7 +97,6 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         $hasError = true;
     }
     if (!$hasError) {
-        //TODO 4
         $db = getDB();
         $stmt = $db->prepare("SELECT id, email, username, password from Users where email = :email or username = :email");
         try {
