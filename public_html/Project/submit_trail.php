@@ -95,6 +95,22 @@ if (isset($_POST["create_trail"])) {
 
     $user_id = get_user_id();
 
+    // Convert difficulty
+    switch($difficulty){
+        case "beg":
+            $difficulty = "Beginner";
+            break;
+        case "easy":
+            $difficulty = "Easiest";
+            break;
+        case "int":
+            $difficulty = "Intermediate";
+            break;
+        case "hard":
+            $difficulty = "Hard";
+            break;
+    }
+
     if (!$hasError) {
         $db = getDB();
         $stmt = $db->prepare("INSERT INTO Trails (name, description, city, region, country, coord, length, difficulty, features) VALUES(:name, :desc, :city, :region, :country, POINT(:lat, :long), :length, :difficulty, :features)");
