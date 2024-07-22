@@ -14,6 +14,8 @@ require(__DIR__ . "/sanitizers.php");
 require(__DIR__ . "/user_helpers.php");
 //TODO 4: Flash Message Helpers
 require(__DIR__ . "/flash_messages.php");
+// Trail Helpers
+require(__DIR__ . "/trail_helpers.php");
 
 //duplicate email/username
 require(__DIR__ . "/duplicate_user_details.php");
