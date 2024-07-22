@@ -44,10 +44,8 @@ if (isset($_POST["save"])) {
             }
         } catch (Exception $e) {
             flash("An unexpected error occurred, please try again", "danger");
-            //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
         }
     }
-
 
     //check/update password
     $current_password = se($_POST, "currentPassword", null, false);
@@ -61,7 +59,6 @@ if (isset($_POST["save"])) {
         }
         if (!$hasError) {
             if ($new_password === $confirm_password) {
-                //TODO validate current
                 $stmt = $db->prepare("SELECT password from Users where id = :id");
                 try {
                     $stmt->execute([":id" => get_user_id()]);
@@ -95,6 +92,7 @@ if (isset($_POST["save"])) {
 $email = get_user_email();
 $username = get_username();
 ?>
+
 <form method="POST" onsubmit="return validate(this);">
     <div class="mb-3">
         <label for="email">Email:</label>

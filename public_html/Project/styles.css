@@ -1,26 +1,6 @@
 
 .alert {
-    padding: 5px;
-    width: 20%;
-    color: white;
-}
-
-.alert-success {
-    background-color: green;
-}
-
-.alert-warning {
-    background-color: yellow;
-    color: black;
-}
-
-.alert-danger {
-    background-color: red;
-    color: black;
-}
-
-.alert-info {
-    background-color: teal;
+    width: 40%;
 }
 
 h1, h2, h3,
