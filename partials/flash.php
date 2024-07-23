@@ -2,7 +2,7 @@
 /*put this at the bottom of the page so any templates
  populate the flash variable and then display at the proper timing*/
 ?>
-<div class="container mt-2" id="flash">
+<div class="container mt-5" id="flash">
     <?php $messages = getMessages(); ?>
     <?php if ($messages) : ?>
         <?php foreach ($messages as $msg) : ?>

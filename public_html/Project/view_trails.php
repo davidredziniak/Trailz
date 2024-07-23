@@ -281,18 +281,22 @@ if (isset($_GET["find"])) {
                     <hr>
                     <?php foreach ($result as $trail) : ?>
                     <div class="row">
-                        <?php echo $trail['name']; ?>
-                        <?php echo $trail['country']; ?>
-                        <?php echo $trail['length']; ?>
-                        <?php echo $trail['difficulty']; ?>
+                        <div class="col-md-6">
+                        Name: <?php echo $trail['name']; ?>
+                        Country: <?php echo $trail['country']; ?>
+                        Length: <?php echo $trail['length']; ?>
+                        Difficulty: <?php echo $trail['difficulty']; ?>
                         <?php if (array_key_exists("distance", $trail)) : ?>
-                            <?php echo $trail['distance']; ?>
+                            Distance: <?php echo $trail['distance']; ?>
                         <?php endif; ?>
+                        </div>
+                        <div class="col-md-6">
                         <a href="./trail.php?id=<?php echo $trail['id'] ?>">View</a>
                         <?php if (has_role("Admin") || is_trail_owner($trail['id'])) : ?>
                             <?php echo '<a href="./edit_trail.php?id=' . $trail['id'] . '">Edit</a>'; ?>
                             <?php echo '<a href="./delete_trail.php?id=' . $trail['id'] . '">Delete</a>'; ?>
                         <?php endif; ?>
+                        </div>
                     </div>
                 <?php endforeach; ?>
                 </div>

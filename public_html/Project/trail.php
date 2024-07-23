@@ -6,28 +6,36 @@ if (isset($_GET["id"])) {
     $id = intval(se($_GET, "id", 0, false));
     is_valid_trail($id, true);
 }
-
 $trail = get_trail_by_id($id);
-
 ?>
 
 <body class="bg-dark">
-    <div class="container-fluid">
-        <h2><?php se($trail, "name"); ?></h2>
-        <div>
-            <h5><?php se($trail, "city"); ?>, <?php se($trail, "region"); ?>, <?php se($trail, "country"); ?></h5>
-            <p><?php se($trail, "description"); ?></p>
-            <p>Difficulty: <?php se($trail, "difficulty"); ?></p>
-            <br>
-            <p>Details</p>
-            <p>Latitude: <?php echo $trail['latitude'] ?></p>
-            <p>Longitude: <?php echo $trail['longitude'] ?></p>
-            <p>Length: <?php echo $trail['length'] ?></p>
-            <p>Features: <?php echo $trail['features'] ?></p>
-            <?php if (has_role("Admin") || is_trail_owner($id)) : ?>
-                <?php echo '<a href="./edit_trail.php?id=' . $id . '">Edit</a>'; ?>
-                <?php echo '<a href="./delete_trail.php?id=' . $id  . '">Delete</a>'; ?>
-            <?php endif; ?>
+    <div class="col-lg-12">
+        <div class="container mt-5 mb-4 p-5 rounded-2 trail-details">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1><?php se($trail, "name"); ?></h1>
+                    <p><?php se($trail, "city"); ?>, <?php se($trail, "region"); ?>, <?php se($trail, "country"); ?></p>
+                    <p><b>Length:</b> <?php echo $trail['length'] ?> miles</p>
+                    <p><b>Description:</b> <?php se($trail, "description"); ?></p>
+                    <p><b>Difficulty:</b> <?php se($trail, "difficulty"); ?></p>
+                    <p><b>Features:</b> <?php echo $trail['features'] ?></p>
+
+                </div>
+                <div class="col-md-4 text-center">
+                    <img src="https://images.singletracks.com/blog/wp-content/uploads/2016/09/vlcsnap-5322-04-07-00h29m52s769-orig.jpg" alt="Hiking Trail Image">
+                    <div class="location-pin">
+                        <img src="https://img.icons8.com/ios-filled/50/000000/marker.png" alt="Location Pin">
+                        <span><?php echo $trail['latitude'] ?>, <?php echo $trail['longitude'] ?></span>
+                    </div>
+                    <div class="btn-group mt-5">
+                        <?php if (has_role("Admin") || is_trail_owner($id)) : ?>
+                            <?php echo '<a href="./edit_trail.php?id=' . $id . '" class="btn btn-primary">Edit</a>'; ?>
+                            <?php echo '<a href="./delete_trail.php?id=' . $id  . '" class="btn btn-danger">Delete</a>'; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
