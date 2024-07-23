@@ -43,6 +43,19 @@ function get_trail_by_id($id)
     return [];
 }
 
+function get_latest_trails(){
+    $db = getDB();
+    $query = "SELECT id, name, country, length, difficulty, thumbnail FROM `Trails` ORDER BY created DESC LIMIT 6";
+    $stmt = $db->prepare($query);
+    try {
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        return $result;
+    } catch (PDOException $e) {
+        error_log("Error fetching latest trails from db: " . var_export($e, true));
+    }
+}
+
 function is_trail_owner($id)
 {
     $user_id = get_user_id();

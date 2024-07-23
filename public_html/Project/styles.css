@@ -137,3 +137,83 @@ body {
 .btn-group a {
     margin-right: 10px;
 }
+
+/* Carousel styling */
+
+.carousel-item {
+    text-align: center;
+    padding: 20px;
+}
+
+.carousel-nav {
+    position: absolute;
+    top: -50px;
+    right: 50px;
+}
+
+.carousel-nav button {
+    background: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-family: bootstrap-icons;
+    color: #ff6f61;
+    font-size: 25px;
+    font-weight: 900;
+}
+
+.carousel-nav button:hover {
+    color: white;
+    background-color: #f24d25;
+}
+
+.carousel-nav button:focus {
+    background-color: white;
+    color: #f24d25;
+
+}
+
+.card {
+    border: none;
+    height: 250px;
+
+}
+
+.card-body img {
+    width: 200px;
+    height: 200px;
+    object-fit: fill;
+}
+
+.card-body {
+    padding: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+}
+
+.card-footer {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f24d25;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.card-footer img {
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+}
+
+.card-person-role {
+    font-size: small;
+    font-weight: 100;
+}
+
+.rating {
+    color: #f3cf02;
+}
