@@ -20,7 +20,7 @@ h4, h5, h6 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px;
+    padding: 5px;
 }
 
 .header .logo h2 {
@@ -44,6 +44,10 @@ h4, h5, h6 {
     color: #333333de;
 }
 
+.header .navbar ul li a:hover {
+    color: white;
+}
+
 .nav-item {
     box-sizing: border-box;
 }
@@ -52,14 +56,17 @@ h4, h5, h6 {
     margin-right: 0;
     margin-left: 0;
     padding: 20px 35px;
+    color: white;
 }
 
 .nav-item:hover {
-    background-color: #ffd853 !important;
+    background-color: #d8441f !important;
+    color: white !important;
 }
 
 .nav-item .active {
-    background: #ffd853;
+    background: #d8441f;
+    color: white !important;
 }
 
 input {
@@ -72,6 +79,17 @@ label {
     color: rgb(255, 255, 255);
 }
 
+#droplabel {
+    margin-right: 0;
+    margin-left: 0;
+    padding: 20px 35px;
+}
+
+#droplabel:hover {
+    color: white !important;
+    background-color: #d8441f !important;
+}
+
 #menuDropdowns {
     display: none;
 }
@@ -80,6 +98,16 @@ label {
     display: block;
 }
 
+.dropdown-item:hover {
+    background-color: #d8441f !important;
+    color:white !important;
+}
+
+
+.btn-primary {
+    background-color: #d8441f !important;
+    border-color: #ce3a15 !important;
+}
 body {
     font-family: Arial, sans-serif;
     margin: 0;

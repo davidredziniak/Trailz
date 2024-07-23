@@ -51,8 +51,6 @@ if (isset($_GET["find"])) {
     //$sortfield = se($_GET, "sort", null, false);
     //$sortby = se($_GET, "sortby", "ASC", false);
 
-
-
     // Check if sortby is valid
     //if ($sortby != "ASC" && $sortby != "DESC"){
     //    flash("Sort by is invalid.", "danger");
@@ -237,10 +235,9 @@ if (isset($_GET["find"])) {
                             <label for="limit" class="form-label">Limit:</label>
                             <input type="number" name="limit" id="limit" class="form-control" />
                         </div>
-                        <button class="btn btn-primary" name="find" value="other" type="submit">Find</button>
+                        <button class="btn btn-primary" name="find" value="location" type="submit">Find</button>
                     </form>
                 </div>
-
             </div>
             <div class="col-md-6">
                 <div class="container-sm mt-5 p-5 rounded-2" style="background-color: #c5c5c5;">
@@ -275,14 +272,15 @@ if (isset($_GET["find"])) {
             </div>
         </div>
     </div>
-</body>
+
 <?php if (!count($result) == 0) : ?>
-    <div class="container-fluid">
-        <h4>Trails</h4>
-        <div class="container mx-auto">
-            <div class="row justify-content-center">
-                <?php foreach ($result as $trail) : ?>
-                    <div class="col">
+    <div class="container">
+        <div class="col-md-12">
+                <div class="container-sm mt-5 p-5 rounded-2" style="background-color: #c5c5c5;">
+                    <h4>Trails</h4>
+                    <hr>
+                    <?php foreach ($result as $trail) : ?>
+                    <div class="row">
                         <?php echo $trail['name']; ?>
                         <?php echo $trail['country']; ?>
                         <?php echo $trail['length']; ?>
@@ -297,10 +295,11 @@ if (isset($_GET["find"])) {
                         <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
+                </div>
             </div>
-        </div>
     </div>
 <?php endif; ?>
+</body>
 <script>
     function validate(form) {
 

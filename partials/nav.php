@@ -42,14 +42,14 @@ session_start();
                 <?php if (is_logged_in()) : ?>
                     <li class="nav-item"><a class="nav-item" href="<?php echo get_url('home.php'); ?>">Home</a></li>
                     <li class="nav-item"><a class="nav-item" href="<?php echo get_url('profile.php'); ?>">Profile</a></li>
-                    <li class="dropdown nav-item" id="menuList">
-                        <a href="#" class="dropdown-toggle nav-item" data-bs-toggle='dropdown'>
+                    <li class="dropdown" id="menuList">
+                        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" id="droplabel">
                             Trails
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu" role="listbox" id="menuDropdowns">
-                            <li class="nav-item"><a href="<?php echo get_url('submit_trail.php'); ?>">Submit</a></li>
-                            <li class="nav-item"><a href="<?php echo get_url('view_trails.php'); ?>">View List</a></li>
+                            <a href="<?php echo get_url('submit_trail.php'); ?>"><li class="dropdown-item">Submit</li></a>
+                            <a href="<?php echo get_url('view_trails.php'); ?>"><li class="dropdown-item">View List</li></a>
                         </ul>
                     </li>
                 <?php endif; ?>
@@ -58,15 +58,15 @@ session_start();
                     <li class="nav-item"><a class="nav-item" href="<?php echo get_url('register.php'); ?>">Register</a></li>
                 <?php endif; ?>
                 <?php if (has_role("Admin")) : ?>
-                    <li class="dropdown nav-item" id="menuList">
-                        <a href="#" class="dropdown-toggle nav-item" data-bs-toggle='dropdown'>
+                    <li class="dropdown" id="menuList">
+                        <a href="#" class="dropdown-toggle nav-item" data-bs-toggle="dropdown" id="droplabel">
                             Admin
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu" role="listbox" id="menuDropdowns">
-                            <li class="nav-item"><a href="<?php echo get_url('admin/create_role.php'); ?>">Create Role</a></li>
-                            <li class="nav-item"><a href="<?php echo get_url('admin/list_roles.php'); ?>">List Roles</a></li>
-                            <li class="nav-item"><a href="<?php echo get_url('admin/assign_roles.php'); ?>">Assign Role</a></li>
+                            <a href="<?php echo get_url('admin/create_role.php'); ?>"><li class="dropdown-item">Create Role</li></a>
+                            <a href="<?php echo get_url('admin/list_roles.php'); ?>"><li class="dropdown-item">List Roles</li></a>
+                            <a href="<?php echo get_url('admin/assign_roles.php'); ?>"><li class="dropdown-item">Assign Role</li></a>
                         </ul>
                     </li>
                 <?php endif; ?>

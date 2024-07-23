@@ -185,7 +185,7 @@ if (isset($_POST["create_trail"])) {
             </div>
             <div class="row mt-4">
                 <div class="col"></div><!-- This is a filler column -->
-                <div class="col-auto"><input type="submit" value="Create Trail" name="create_trail" class="btn btn-primary" /></div>
+                <div class="col-auto"><input type="submit" value="Submit" name="create_trail" class="btn btn-primary" /></div>
             </div>
         </form>
     </div>
