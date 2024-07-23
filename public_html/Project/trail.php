@@ -2,10 +2,14 @@
 require_once(__DIR__ . "/../../partials/nav.php");
 // Check if user is logged in
 is_logged_in(true);
+
+// Check if ID is set and is a valid trail
 if (isset($_GET["id"])) {
     $id = intval(se($_GET, "id", 0, false));
     is_valid_trail($id, true);
 }
+
+// Retrieve trail data
 $trail = get_trail_by_id($id);
 ?>
 
@@ -20,7 +24,6 @@ $trail = get_trail_by_id($id);
                     <p><b>Description:</b> <?php se($trail, "description"); ?></p>
                     <p><b>Difficulty:</b> <?php se($trail, "difficulty"); ?></p>
                     <p><b>Features:</b> <?php echo $trail['features'] ?></p>
-
                 </div>
                 <div class="col-md-4 text-center">
                     <img src="https://images.singletracks.com/blog/wp-content/uploads/2016/09/vlcsnap-5322-04-07-00h29m52s769-orig.jpg" alt="Hiking Trail Image">
