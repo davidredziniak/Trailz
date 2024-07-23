@@ -324,7 +324,7 @@ if (isset($_GET["find"])) {
             // Check if specified limit is valid
             if (limit !== "") {
                 limit = parseInt(limit);
-                if (limit <= 0 || limit >= 100) {
+                if (limit <= 0 || limit > 100) {
                     flash("Limit specified must be a number in the range 1-100.", "warning");
                     return false;
                 }
@@ -356,7 +356,7 @@ if (isset($_GET["find"])) {
             // Check if specified limit is valid
             if (limit !== "") {
                 limit = parseInt(limit);
-                if (limit <= 0 || limit >= 100) {
+                if (limit <= 0 || limit > 100) {
                     flash("Limit specified must be a number in the range 1-100.", "warning");
                     return false;
                 }
