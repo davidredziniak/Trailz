@@ -19,17 +19,17 @@ $trail = get_trail_by_id($id);
             <div class="row">
                 <div class="col-md-8">
                     <h1><?php se($trail, "name"); ?></h1>
-                    <p><?php se($trail, "city"); ?>, <?php se($trail, "region"); ?>, <?php se($trail, "country"); ?></p>
-                    <p><b>Length:</b> <?php echo $trail['length'] ?> miles</p>
-                    <p><b>Description:</b> <?php se($trail, "description"); ?></p>
-                    <p><b>Difficulty:</b> <?php se($trail, "difficulty"); ?></p>
-                    <p><b>Features:</b> <?php echo $trail['features'] ?></p>
+                    <p><?php se($trail, "city"); ?>, <?php se($trail, "region", "", true); ?>, <?php se($trail, "country", "", true); ?></p>
+                    <p><b>Length:</b> <?php se($trail, "length", "", true); ?> miles</p>
+                    <p><b>Description:</b> <?php se($trail, "description", "", true); ?></p>
+                    <p><b>Difficulty:</b> <?php se($trail, "difficulty", "", true); ?></p>
+                    <p><b>Features:</b> <?php se($trail, "features", "", true) ?></p>
                 </div>
                 <div class="col-md-4 text-center">
                     <img src="<?php echo $trail['thumbnail'] ?>" alt="Hiking Trail Image">
                     <div class="location-pin">
                         <img src="https://img.icons8.com/ios-filled/50/000000/marker.png" alt="Location Pin">
-                        <span><?php echo $trail['latitude'] ?>, <?php echo $trail['longitude'] ?></span>
+                        <span><?php se($trail, "latitude", "", true) ?>, <?php se($trail, "longitude", "", true) ?></span>
                     </div>
                     <div class="btn-group mt-5">
                         <?php if (has_role("Admin") || is_trail_owner($id)) : ?>
