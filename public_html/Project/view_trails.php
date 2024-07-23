@@ -121,7 +121,7 @@ if (isset($_GET["find"])) {
 
         if (empty($length) && empty($country) && empty($diff)) {
             $hasError = true;
-            flash("You must specify at least one field (length, country, or difficulty).");
+            flash("You must specify at least one field (length, country, or difficulty).", "warning");
         }
 
         // Check if length is provided 
@@ -273,41 +273,124 @@ if (isset($_GET["find"])) {
         </div>
     </div>
 
-<?php if (!count($result) == 0) : ?>
-    <div class="container">
-        <div class="col-md-12">
-                <div class="container-sm mt-5 p-5 rounded-2" style="background-color: #ffffff;">
+    <?php if (!count($result) == 0) : ?>
+        <div class="container">
+            <div class="col-md-12">
+                <div class="container-lg mt-5 p-5 rounded-2" style="background-color: #ffffff;">
                     <h4>Trails</h4>
                     <hr>
                     <?php foreach ($result as $trail) : ?>
-                    <div class="row">
-                        <div class="col-md-6">
-                        Name: <?php echo $trail['name']; ?>
-                        Country: <?php echo $trail['country']; ?>
-                        Length: <?php echo $trail['length']; ?>
-                        Difficulty: <?php echo $trail['difficulty']; ?>
-                        <?php if (array_key_exists("distance", $trail)) : ?>
-                            Distance: <?php echo $trail['distance']; ?>
-                        <?php endif; ?>
+                        <div class="row mt-1">
+                            <div class="col-md-8">
+                                <p>
+                                    <b><?php echo $trail['name']; ?></b>,
+                                    <?php echo $trail['country']; ?> -
+                                    <b>Length</b>: <?php echo $trail['length']; ?> mi -
+                                    <b>Difficulty</b>: <?php echo $trail['difficulty']; ?>
+                                    <?php if (array_key_exists("distance", $trail)) : ?>
+                                        - <b>Distance</b>: <?php echo number_format($trail['distance'], 2); ?> mi
+                                    <?php endif; ?>
+                                </p>
+                            </div>
+                            <div class="col-md-4 d-flex justify-content-end">
+                                <p>
+                                    <a href="./trail.php?id=<?php echo $trail['id'] ?>">View</a>
+                                    <?php if (has_role("Admin") || is_trail_owner($trail['id'])) : ?>
+                                        <?php echo '<a href="./edit_trail.php?id=' . $trail['id'] . '">Edit</a>'; ?>
+                                        <?php echo '<a href="./delete_trail.php?id=' . $trail['id'] . '">Delete</a>'; ?>
+                                    <?php endif; ?>
+                                </p>
+
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                        <a href="./trail.php?id=<?php echo $trail['id'] ?>">View</a>
-                        <?php if (has_role("Admin") || is_trail_owner($trail['id'])) : ?>
-                            <?php echo '<a href="./edit_trail.php?id=' . $trail['id'] . '">Edit</a>'; ?>
-                            <?php echo '<a href="./delete_trail.php?id=' . $trail['id'] . '">Delete</a>'; ?>
-                        <?php endif; ?>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
                 </div>
             </div>
-    </div>
-<?php endif; ?>
+        </div>
+    <?php endif; ?>
 </body>
 <script>
     function validate(form) {
+        if (form.find.value == "location") {
+            let lat = form.lat.value;
+            let long = form.long.value;
+            let radius = form.radius.value;
+            let limit = form.limit.value;
 
-        return true;
+            // Check if empty values
+            if (lat == "" || long == "" || radius == "") {
+                flash("You must enter latitude, longitude, and radius.", "warning");
+                return false;
+            }
+
+            // Check if specified limit is valid
+            if (limit !== "") {
+                limit = parseInt(limit);
+                if (limit <= 0 || limit >= 100) {
+                    flash("Limit specified must be a number in the range 1-100.", "warning");
+                    return false;
+                }
+            }
+
+            // Check if latitude is valid using regex
+            if (!/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$/.test(lat)) {
+                flash("Latitude is invalid. Enter a value from -90.00 to 90.00", "warning");
+                return false;
+            }
+
+            // Check if longtitude is valid using regex
+            if (!/^[-]?([1-9]?\d(\.\d+)?|1[0-7]\d(\.\d+)?|180(\.0+)?)$/i.test(long)) {
+                flash("Longitude is invalid. Enter a value from -180.00 to 180.00", "warning");
+                return false;
+            }
+            return true;
+        } else if (form.find.value == "other") {
+            let country = form.country.value;
+            let length = form.length.value;
+            let diff = form.difficulty.value;
+            let limit = form.limit.value;
+
+            if (country == "" && length == "" && diff == ""){
+                flash("You must specify a field between country, max length or difficulty.", "warning");
+                return false;
+            }
+
+            // Check if specified limit is valid
+            if (limit !== "") {
+                limit = parseInt(limit);
+                if (limit <= 0 || limit >= 100) {
+                    flash("Limit specified must be a number in the range 1-100.", "warning");
+                    return false;
+                }
+            }
+
+            // Check country length is valid
+            if (country.length > 30) {
+                flash("The length of the country should not be greater than 30 chars.", "warning");
+                return false;
+            }
+
+            // Check if length is valid (non negative)
+            if (length !== "" && parseFloat(length) <= 0) {
+                flash("Please enter a length greater than 0 miles.", "warning");
+                return false;
+            }
+
+            // Check if length is valid (non negative)
+            if (length !== "" && parseFloat(length) <= 0) {
+                flash("Please enter a length greater than 0 miles.", "warning");
+                return false;
+            }
+
+            // Check if difficulty selection is valid
+            if (diff !== "" && diff != "easy" && diff != "beg" && diff != "int" && diff != "adv") {
+                flash("Invalid difficulty selection, please select a drop down option.", "warning");
+                return false;
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 </script>
 <?php
