@@ -11,7 +11,7 @@ if (isset($_POST["role_id"])) {
     $role_id = se($_POST, "role_id", "", false);
     if (!empty($role_id)) {
         $db = getDB();
-        $stmt = $db->prepare("UPDATE Roles SET is_active = !is_active WHERE id = :rid");
+        $stmt = $db->prepare("UPDATE `Roles` SET is_active = !is_active WHERE id = :rid");
         try {
             $stmt->execute([":rid" => $role_id]);
             flash("Updated Role", "success");
@@ -20,7 +20,7 @@ if (isset($_POST["role_id"])) {
         }
     }
 }
-$query = "SELECT id, name, description, is_active from Roles";
+$query = "SELECT id, name, description, is_active FROM `Roles`";
 $params = null;
 if (isset($_POST["role"])) {
     $search = se($_POST, "role", "", false);

@@ -1,6 +1,5 @@
 <?php
-// UCID: dr475
-// Date: 07/08/24
+
 require_once(__DIR__ . "/../../partials/nav.php");
 is_logged_in(true);
 ?>
@@ -23,7 +22,7 @@ if (isset($_POST["save"])) {
     if (!$hasError) {
         $params = [":email" => $email, ":username" => $username, ":id" => get_user_id()];
         $db = getDB();
-        $stmt = $db->prepare("UPDATE Users set email = :email, username = :username where id = :id");
+        $stmt = $db->prepare("UPDATE Users SET email = :email, username = :username WHERE id = :id");
         try {
             $stmt->execute($params);
             flash("Profile saved", "success");
@@ -31,7 +30,7 @@ if (isset($_POST["save"])) {
             users_check_duplicate($e->errorInfo);
         }
         //select fresh data from table
-        $stmt = $db->prepare("SELECT id, email, username from Users where id = :id LIMIT 1");
+        $stmt = $db->prepare("SELECT id, email, username FROM `Users` WHERE id = :id LIMIT 1");
         try {
             $stmt->execute([":id" => get_user_id()]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -44,10 +43,8 @@ if (isset($_POST["save"])) {
             }
         } catch (Exception $e) {
             flash("An unexpected error occurred, please try again", "danger");
-            //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
         }
     }
-
 
     //check/update password
     $current_password = se($_POST, "currentPassword", null, false);
@@ -61,14 +58,13 @@ if (isset($_POST["save"])) {
         }
         if (!$hasError) {
             if ($new_password === $confirm_password) {
-                //TODO validate current
-                $stmt = $db->prepare("SELECT password from Users where id = :id");
+                $stmt = $db->prepare("SELECT password FROM `Users` WHERE id = :id");
                 try {
                     $stmt->execute([":id" => get_user_id()]);
                     $result = $stmt->fetch(PDO::FETCH_ASSOC);
                     if (isset($result["password"])) {
                         if (password_verify($current_password, $result["password"])) {
-                            $query = "UPDATE Users set password = :password where id = :id";
+                            $query = "UPDATE `Users` SET password = :password WHERE id = :id";
                             $stmt = $db->prepare($query);
                             $stmt->execute([
                                 ":id" => get_user_id(),
@@ -95,31 +91,46 @@ if (isset($_POST["save"])) {
 $email = get_user_email();
 $username = get_username();
 ?>
-<form method="POST" onsubmit="return validate(this);">
-    <div class="mb-3">
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" value="<?php se($email); ?>" />
+
+<body class="bg-dark">
+    <div class="container mt-5 p-5 rounded-2 w-25" style="background-color: #ffffff;">
+        <h2>Edit Profile</h2>
+        <hr>
+        <form method="POST" onsubmit="return validate(this);">
+            <div class="container-xlg mt-2 mb-4">
+                <div class="mb-3 mt-2">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" name="email" id="email" value="<?php se($email); ?>" class="form-control" />
+                </div>
+                <div class="mb-4">
+                    <label for="username" class="form-label">Username:</label>
+                    <input type="text" name="username" id="username" value="<?php se($username); ?>" class="form-control" />
+                </div>
+            </div>
+            <div class="container-xlg">
+                <h6>Password Reset</h6>
+                <hr>
+                <div class="mb-3">
+                    <label for="cp" class="form-label">Current Password:</label>
+                    <input type="password" name="currentPassword" id="cp" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label for="np" class="form-label">New Password:</label>
+                    <input type="password" name="newPassword" id="np" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label for="conp" class="form-label">Confirm Password:</label>
+                    <input type="password" name="confirmPassword" id="conp" class="form-control" />
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col"></div><!-- This is a filler column -->
+                <div class="col-auto"><input type="submit" value="Update" name="save" class="btn btn-primary" /></div>
+            </div>
+        </form>
     </div>
-    <div class="mb-3">
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" value="<?php se($username); ?>" />
-    </div>
-    <!-- DO NOT PRELOAD PASSWORD -->
-    <div><h4>Password Reset</h4></div>
-    <div class="mb-3">
-        <label for="cp">Current Password:</label>
-        <input type="password" name="currentPassword" id="cp" />
-    </div>
-    <div class="mb-3">
-        <label for="np">New Password:</label>
-        <input type="password" name="newPassword" id="np" />
-    </div>
-    <div class="mb-3">
-        <label for="conp">Confirm Password:</label>
-        <input type="password" name="confirmPassword" id="conp" />
-    </div>
-    <input type="submit" value="Update Profile" name="save" />
-</form>
+</body>
+
 
 <script>
     function validate(form) {
@@ -130,44 +141,44 @@ $username = get_username();
         let confirmNewPass = form.confirmPassword.value;
 
         // Check if email is empty
-        if (email === ""){
+        if (email === "") {
             alert("[Client]: Email field cannot be empty.");
             return false;
         }
 
         // Check if username is empty
-        if (username === ""){
+        if (username === "") {
             alert("[Client]: Username field cannot be empty.");
             return false;
         }
 
         // If email, check if email is valid using regex
-        if (!/^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(email)){
+        if (!/^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(email)) {
             alert("[Client]: " + email + " is invalid.")
             return false;
         }
 
         // Username validation using regex
-        if (!/^[a-z0-9_-]{3,30}$/.test(username)){
+        if (!/^[a-z0-9_-]{3,30}$/.test(username)) {
             alert("[Client]: Username must be 3-30 characters and contain valid characters (a-z, 0-9, _, or -)");
             return false;
         }
 
         // Check if user is only changing email/username
-            if (currentPass === "" && newPass === "" && confirmNewPass === ""){
+        if (currentPass === "" && newPass === "" && confirmNewPass === "") {
             return true;
         }
-        
+
         // Check if current password is empty (Required to edit profile)
-        if (currentPass === ""){
+        if (currentPass === "") {
             alert("[Client]: Current password field is required to change the password..");
             return false;
         }
-        
+
 
 
         // Check password length (user changing password)
-        if (currentPass.length < 8 || newPass.length < 8 || confirmNewPass.length < 8){
+        if (currentPass.length < 8 || newPass.length < 8 || confirmNewPass.length < 8) {
             alert("[Client]: Password lengths cannot be less than 8 characters.");
             return false;
         }
