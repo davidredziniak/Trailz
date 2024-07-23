@@ -273,36 +273,41 @@ if (isset($_GET["find"])) {
         </div>
     </div>
 
-<?php if (!count($result) == 0) : ?>
-    <div class="container">
-        <div class="col-md-12">
-                <div class="container-sm mt-5 p-5 rounded-2" style="background-color: #ffffff;">
+    <?php if (!count($result) == 0) : ?>
+        <div class="container">
+            <div class="col-md-12">
+                <div class="container-lg mt-5 p-5 rounded-2" style="background-color: #ffffff;">
                     <h4>Trails</h4>
                     <hr>
                     <?php foreach ($result as $trail) : ?>
-                    <div class="row">
-                        <div class="col-md-6">
-                        Name: <?php echo $trail['name']; ?>
-                        Country: <?php echo $trail['country']; ?>
-                        Length: <?php echo $trail['length']; ?>
-                        Difficulty: <?php echo $trail['difficulty']; ?>
-                        <?php if (array_key_exists("distance", $trail)) : ?>
-                            Distance: <?php echo $trail['distance']; ?>
-                        <?php endif; ?>
+                        <div class="row mt-1">
+                            <div class="col-md-8">
+                                <p>
+                                    <b><?php echo $trail['name']; ?></b>,
+                                    <?php echo $trail['country']; ?> -
+                                    <b>Length</b>: <?php echo $trail['length']; ?> mi -
+                                    <b>Difficulty</b>: <?php echo $trail['difficulty']; ?>
+                                    <?php if (array_key_exists("distance", $trail)) : ?>
+                                        - <b>Distance</b>: <?php echo number_format($trail['distance'], 2); ?> mi
+                                    <?php endif; ?>
+                                </p>
+                            </div>
+                            <div class="col-md-4 d-flex justify-content-end">
+                                <p>
+                                    <a href="./trail.php?id=<?php echo $trail['id'] ?>">View</a>
+                                    <?php if (has_role("Admin") || is_trail_owner($trail['id'])) : ?>
+                                        <?php echo '<a href="./edit_trail.php?id=' . $trail['id'] . '">Edit</a>'; ?>
+                                        <?php echo '<a href="./delete_trail.php?id=' . $trail['id'] . '">Delete</a>'; ?>
+                                    <?php endif; ?>
+                                </p>
+
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                        <a href="./trail.php?id=<?php echo $trail['id'] ?>">View</a>
-                        <?php if (has_role("Admin") || is_trail_owner($trail['id'])) : ?>
-                            <?php echo '<a href="./edit_trail.php?id=' . $trail['id'] . '">Edit</a>'; ?>
-                            <?php echo '<a href="./delete_trail.php?id=' . $trail['id'] . '">Delete</a>'; ?>
-                        <?php endif; ?>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
                 </div>
             </div>
-    </div>
-<?php endif; ?>
+        </div>
+    <?php endif; ?>
 </body>
 <script>
     function validate(form) {

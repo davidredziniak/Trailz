@@ -6,22 +6,22 @@ if (is_logged_in(true)) {
     // Get recently added trails
     $trails = get_latest_trails();
 
-    function get_html_difficulty($difficulty){
+    function get_diff_html($difficulty){
         switch ($difficulty) {
             case "Easiest":
-                return '<div class="rating">Difficulty ★☆☆☆</div>';
+                return '<div>Difficulty <span class="rating">★☆☆☆</span></div>';
                 break;
             case "Beginner":
-                return '<div class="rating">Difficulty ★★☆☆</div>';
+                return '<div>Difficulty <span class="rating">★★☆☆</span></div>';
                 break;
             case "Intermediate":
-                return '<div class="rating">Difficulty ★★★☆</div>';
+                return '<div>Difficulty <span class="rating">★★★☆</span></div>';
                 break;
             case "Advanced":
-                return '<div class="rating">Difficulty ★★★★</div>';
+                return '<div>Difficulty <span class="rating">★★★★</span></div>';
                 break;
             default:
-                return '<div class="rating">Difficulty ☆☆☆☆</div>';
+                return '<div>Difficulty <span class="rating">☆☆☆☆</span></div>';
                 break;
         }
     }
@@ -47,8 +47,8 @@ if (is_logged_in(true)) {
                         <button class="page-link" type="button" data-bs-target="#carousel-items" data-bs-slide="prev">
                             <span>←</span>
                         </button>
-                        <button class="page-link" type="button" data-bs-target="#carousel-items" data-bs-slide="next">
-                            <span>→</span>
+                        <button class="page-link ms-2" type="button" data-bs-target="#carousel-items" data-bs-slide="next">
+                            <span >→</span>
                         </button>
                     </div>
                     <div class="carousel-inner pt-5">
@@ -62,7 +62,7 @@ if (is_logged_in(true)) {
                                                 </div>
                                                 <div class="card-footer">
                                                     <div><strong><?php se($trails[$i], "name", "", true); ?></strong></div>
-                                                    <?php echo get_html_difficulty($trails[$i]["difficulty"]) ?>
+                                                    <?php echo get_diff_html($trails[$i]["difficulty"]) ?>
                                                 </div>
                                             </div>
                                         </a>
@@ -80,7 +80,7 @@ if (is_logged_in(true)) {
                                                 </div>
                                                 <div class="card-footer">
                                                     <div><strong><?php se($trails[$i], "name", "", true); ?></strong></div>
-                                                    <?php echo get_html_difficulty($trails[$i]["difficulty"]) ?>
+                                                    <?php echo get_diff_html($trails[$i]["difficulty"]) ?>
                                                 </div>
                                             </div>
                                         </a>
