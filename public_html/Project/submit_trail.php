@@ -63,7 +63,7 @@ if (isset($_POST["create_trail"])) {
     }
 
     // Check if difficulty is one of four options (Easiest, Beginner, Intermediate, Hard)
-    if ($difficulty != "easy" && $difficulty != "beg" && $difficulty != "int" && $difficulty != "hard") {
+    if ($difficulty != "easy" && $difficulty != "beg" && $difficulty != "int" && $difficulty != "adv") {
         flash("Difficulty selection is invalid. Please select an option from the drop down.", "danger");
         $hasError = true;
     }
@@ -236,7 +236,7 @@ if (isset($_POST["create_trail"])) {
         }
 
         // Check if difficulty selection is valid
-        if (diff != "easy" && diff != "beg" && diff != "int" && diff != "hard") {
+        if (diff != "easy" && diff != "beg" && diff != "int" && diff != "adv") {
             flash("Invalid difficulty selection, please select a drop down option.", "warning");
             return false;
         }

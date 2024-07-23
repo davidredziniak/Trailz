@@ -1,6 +1,5 @@
 <?php
-// UCID: dr475
-// Date: 07/08/24
+
 require_once(__DIR__ . "/../../partials/nav.php");
 is_logged_in(true);
 ?>
