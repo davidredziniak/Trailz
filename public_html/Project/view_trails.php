@@ -9,7 +9,7 @@ $result = [];
 <?php
 
 if (isset($_GET["find"])) {
-    $difficulties = ["easy", "beg", "int", "hard"];
+    $difficulties = ["easy", "beg", "int", "adv"];
     $hasError = false;
     $type = se($_GET, "find", null, false);
 
@@ -96,7 +96,7 @@ if (isset($_GET["find"])) {
 
         if (!$hasError) {
             $db = getDB();
-            $stmt = $db->prepare("SELECT id, name, city, country, length, difficulty, (3959 * acos(cos(radians(:lat)) * cos(radians(ST_X(`coord`))) * cos( radians(ST_Y(`coord`)) - radians(:long)) + sin(radians(:lat)) * sin(radians(ST_X(`coord`))))) AS distance FROM Trails HAVING distance <= :distance ORDER BY distance LIMIT " . intval($limit) . ";");
+            $stmt = $db->prepare("SELECT id, name, city, country, length, difficulty, (3959 * acos(cos(radians(:lat)) * cos(radians(ST_X(`coord`))) * cos( radians(ST_Y(`coord`)) - radians(:long)) + sin(radians(:lat)) * sin(radians(ST_X(`coord`))))) AS distance FROM `Trails` HAVING distance <= :distance ORDER BY distance LIMIT " . intval($limit) . ";");
             try {
                 $stmt->execute([":lat" => $lat, ":long" => $long, ":distance" => $radius]);
                 $r = $stmt->fetchAll();
@@ -164,8 +164,8 @@ if (isset($_GET["find"])) {
                     case "int":
                         $diff = "Intermediate";
                         break;
-                    case "hard":
-                        $diff = "Hard";
+                    case "adv":
+                        $diff = "Advanced";
                         break;
                 }
             }
@@ -194,7 +194,7 @@ if (isset($_GET["find"])) {
             }
 
             $db = getDB();
-            $stmt = $db->prepare("SELECT id, name, city, country, length, difficulty FROM Trails WHERE " . $query . " LIMIT " . intval($limit) . ";");
+            $stmt = $db->prepare("SELECT id, name, city, country, length, difficulty FROM `Trails` WHERE " . $query . " LIMIT " . intval($limit) . ";");
             try {
                 $stmt->execute();
                 $r = $stmt->fetchAll();
@@ -259,7 +259,7 @@ if (isset($_GET["find"])) {
                                 <option value="easy">Easiest</option>
                                 <option value="beg">Beginner</option>
                                 <option value="int">Intermediate</option>
-                                <option value="hard">Hard</option>
+                                <option value="adv">Advanced</option>
                             </select>
                         </div>
                         <div class="mb-3">

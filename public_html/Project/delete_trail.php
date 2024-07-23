@@ -13,14 +13,14 @@ if (isset($_GET["id"])) {
     } else {
         // Check if the trail is user submitted
         $db = getDB();
-        $stmt = $db->prepare("SELECT * FROM User_Trails WHERE trail_id=:id;");
+        $stmt = $db->prepare("SELECT * FROM `User_Trails` WHERE trail_id=:id;");
         try {
             $stmt->bindValue(":id", $id);
             $stmt->execute();
             $r = $stmt->fetch();
             // Delete User_Trails if it exists (Not API generated)
             if ($r) {
-                $stmt2 = $db->prepare("DELETE FROM User_Trails WHERE trail_id=:id;");
+                $stmt2 = $db->prepare("DELETE FROM `User_Trails` WHERE trail_id=:id;");
                 $stmt2->bindValue(":id", $id);
                 try {
                     $stmt2->execute();
@@ -30,7 +30,7 @@ if (isset($_GET["id"])) {
             }
 
             // Delete the Trails record
-            $stmt3 = $db->prepare("DELETE FROM Trails WHERE id=:id;");
+            $stmt3 = $db->prepare("DELETE FROM `Trails` WHERE id=:id;");
             try {
                 $stmt3->execute([":id" => $id]);
                 flash("Successfully deleted the trail.", "success");
@@ -45,12 +45,16 @@ if (isset($_GET["id"])) {
     die(header("Location: " . get_url("view_trails.php")));
 }
 ?>
+<script>
+    setTimeout(function() {
+        window.history.go(-1);
+    }, 3000);
+</script>
 
 <body class="bg-dark">
     <div class="container">
     </div>
 </body>
-
 <?php
 require_once(__DIR__ . "/../../partials/flash.php");
 ?>

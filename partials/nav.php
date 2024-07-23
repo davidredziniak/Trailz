@@ -67,6 +67,7 @@ session_start();
                             <a href="<?php echo get_url('admin/create_role.php'); ?>"><li class="dropdown-item">Create Role</li></a>
                             <a href="<?php echo get_url('admin/list_roles.php'); ?>"><li class="dropdown-item">List Roles</li></a>
                             <a href="<?php echo get_url('admin/assign_roles.php'); ?>"><li class="dropdown-item">Assign Role</li></a>
+                            <a href="<?php echo get_url('admin/fetch_trails.php'); ?>"><li class="dropdown-item">Fetch Trails</li></a>
                         </ul>
                     </li>
                 <?php endif; ?>

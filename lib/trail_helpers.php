@@ -8,7 +8,7 @@ function is_valid_trail($id, $redirect = false, $destination = "view_trails.php"
 {
     $valid = false;
     $db = getDB();
-    $stmt = $db->prepare("SELECT 1 FROM Trails WHERE id=:id LIMIT 1;");
+    $stmt = $db->prepare("SELECT 1 FROM `Trails` WHERE id=:id LIMIT 1;");
     try {
         $stmt->execute([":id" => intval($id)]);
         $r = $stmt->fetchAll();
@@ -30,7 +30,7 @@ function is_valid_trail($id, $redirect = false, $destination = "view_trails.php"
 function get_trail_by_id($id)
 {
     $db = getDB();
-    $query = "SELECT name, description, city, region, country, ST_X(coord) as latitude, ST_Y(coord) as longitude, length, difficulty, features FROM Trails WHERE id = :id";
+    $query = "SELECT name, description, city, region, country, ST_X(coord) as latitude, ST_Y(coord) as longitude, length, difficulty, features, thumbnail FROM `Trails` WHERE id = :id";
     $stmt = $db->prepare($query);
     $stmt->bindValue(":id", $id);
     try {
@@ -47,7 +47,7 @@ function is_trail_owner($id)
 {
     $user_id = get_user_id();
     $db = getDB();
-    $stmt = $db->prepare("SELECT 1 FROM User_Trails WHERE trail_id=:id AND user_id=:user_id LIMIT 1;");
+    $stmt = $db->prepare("SELECT 1 FROM `User_Trails` WHERE trail_id=:id AND user_id=:user_id LIMIT 1;");
     try {
         $stmt->execute([":id" => intval($id), ":user_id" => intval($user_id)]);
         $r = $stmt->fetchAll();

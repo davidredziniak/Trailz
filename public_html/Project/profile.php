@@ -23,7 +23,7 @@ if (isset($_POST["save"])) {
     if (!$hasError) {
         $params = [":email" => $email, ":username" => $username, ":id" => get_user_id()];
         $db = getDB();
-        $stmt = $db->prepare("UPDATE Users set email = :email, username = :username where id = :id");
+        $stmt = $db->prepare("UPDATE Users SET email = :email, username = :username WHERE id = :id");
         try {
             $stmt->execute($params);
             flash("Profile saved", "success");
@@ -31,7 +31,7 @@ if (isset($_POST["save"])) {
             users_check_duplicate($e->errorInfo);
         }
         //select fresh data from table
-        $stmt = $db->prepare("SELECT id, email, username from Users where id = :id LIMIT 1");
+        $stmt = $db->prepare("SELECT id, email, username FROM `Users` WHERE id = :id LIMIT 1");
         try {
             $stmt->execute([":id" => get_user_id()]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -59,13 +59,13 @@ if (isset($_POST["save"])) {
         }
         if (!$hasError) {
             if ($new_password === $confirm_password) {
-                $stmt = $db->prepare("SELECT password from Users where id = :id");
+                $stmt = $db->prepare("SELECT password FROM `Users` WHERE id = :id");
                 try {
                     $stmt->execute([":id" => get_user_id()]);
                     $result = $stmt->fetch(PDO::FETCH_ASSOC);
                     if (isset($result["password"])) {
                         if (password_verify($current_password, $result["password"])) {
-                            $query = "UPDATE Users set password = :password where id = :id";
+                            $query = "UPDATE `Users` SET password = :password WHERE id = :id";
                             $stmt = $db->prepare($query);
                             $stmt->execute([
                                 ":id" => get_user_id(),

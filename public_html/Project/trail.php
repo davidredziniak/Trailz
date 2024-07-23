@@ -26,7 +26,7 @@ $trail = get_trail_by_id($id);
                     <p><b>Features:</b> <?php echo $trail['features'] ?></p>
                 </div>
                 <div class="col-md-4 text-center">
-                    <img src="https://images.singletracks.com/blog/wp-content/uploads/2016/09/vlcsnap-5322-04-07-00h29m52s769-orig.jpg" alt="Hiking Trail Image">
+                    <img src="<?php echo $trail['thumbnail'] ?>" alt="Hiking Trail Image">
                     <div class="location-pin">
                         <img src="https://img.icons8.com/ios-filled/50/000000/marker.png" alt="Location Pin">
                         <span><?php echo $trail['latitude'] ?>, <?php echo $trail['longitude'] ?></span>
