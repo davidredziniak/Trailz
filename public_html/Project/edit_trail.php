@@ -15,6 +15,7 @@ if (isset($_GET["id"])) {
     $trail = get_trail_by_id($id);
 
     if (isset($_POST["save"])) {
+
         $name = se($_POST, "name", null, false);
         $desc = se($_POST, "desc", null, false);
         $city = se($_POST, "city", null, false);
@@ -59,6 +60,7 @@ if (isset($_GET["id"])) {
             flash("Longitude must not be empty", "danger");
             $hasError = true;
         }
+
         if (empty($length)) {
             flash("Length of trail must not be empty", "danger");
             $hasError = true;
@@ -103,7 +105,7 @@ if (isset($_GET["id"])) {
             flash("The length of the Features field should not be greater than 100 chars.", "danger");
             $hasError = true;
         }
-        
+
         $lat = floatval($lat);
         $long = floatval($long);
 
@@ -222,6 +224,7 @@ if (isset($_GET["id"])) {
 </body>
 
 <script>
+
     function validate(form) {
         let name = form.name.value;
         let desc = form.desc.value;

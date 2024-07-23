@@ -1,6 +1,7 @@
 <?php
 require_once(__DIR__ . "/../../partials/nav.php");
 // Check if user is logged in
+
 is_logged_in(true);
 if (isset($_GET["id"])) {
     $id = intval(se($_GET, "id", 0, false));

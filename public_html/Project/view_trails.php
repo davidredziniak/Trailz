@@ -2,7 +2,6 @@
 require_once(__DIR__ . "/../../partials/nav.php");
 // Check if user is logged in
 is_logged_in(true);
-
 $result = [];
 
 ?>
@@ -272,7 +271,6 @@ if (isset($_GET["find"])) {
             </div>
         </div>
     </div>
-
     <?php if (!count($result) == 0) : ?>
         <div class="container">
             <div class="col-md-12">
@@ -350,7 +348,7 @@ if (isset($_GET["find"])) {
             let diff = form.difficulty.value;
             let limit = form.limit.value;
 
-            if (country == "" && length == "" && diff == ""){
+            if (country == "" && length == "" && diff == "") {
                 flash("You must specify a field between country, max length or difficulty.", "warning");
                 return false;
             }

@@ -109,8 +109,6 @@ if (isset($_POST["create_trail"])) {
             break;
     }
 
-    // UCID: dr475
-    // Date: 07/23/24
     if (!$hasError) {
         $db = getDB();
         $stmt = $db->prepare("INSERT INTO `Trails` (name, description, city, region, country, coord, length, difficulty, features, thumbnail) VALUES(:name, :desc, :city, :region, :country, POINT(:lat, :long), :length, :difficulty, :features, '')");

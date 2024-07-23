@@ -1,5 +1,5 @@
 ## Project Name: IT202 Trail API Project
-### Project Summary: This project will primarily use data pull from an API to do something 
+### Project Summary: A website that allows users to search for trails locally.
 ### Github Link: https://github.com/davidredziniak/dr475-IT202-452-M2024/tree/prod/public_html/Project/
 ### Project Board Link: https://github.com/users/davidredziniak/projects/2
 ### Website Link: https://it202-dr475-prod-7559be2e2ad4.herokuapp.com/Project/
@@ -11,9 +11,9 @@
 ### Proposal Checklist and Evidence
 
 - Milestone 1
-  - (add link to milestone1.md from milestone1 branch)  
+  - [Link](https://github.com/davidredziniak/dr475-IT202-452-M2024/blob/Milestone1/public_html/Project/milestone1.md)
 - Milestone 2
-  - (add link to milestone2.md from milestone2 branch)
+  - [Link](https://github.com/davidredziniak/dr475-IT202-452-M2024/blob/Milestone2/public_html/Project/milestone2.md)
 - Milestone 3
   - (add link to milestone3.md from milestone3 branch)
 - Milestone 4
