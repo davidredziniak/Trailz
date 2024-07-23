@@ -94,7 +94,7 @@ $username = get_username();
 ?>
 
 <body class="bg-dark">
-    <div class="container mt-5 p-5 rounded-2 w-25" style="background-color: #c5c5c5;">
+    <div class="container mt-5 p-5 rounded-2 w-25" style="background-color: #ffffff;">
         <h2>Edit Profile</h2>
         <hr>
         <form method="POST" onsubmit="return validate(this);">

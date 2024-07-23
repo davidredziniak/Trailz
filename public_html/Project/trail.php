@@ -11,7 +11,7 @@ $trail = get_trail_by_id($id);
 
 <body class="bg-dark">
     <div class="col-lg-12">
-        <div class="container mt-5 mb-4 p-5 rounded-2 trail-details">
+        <div class="container mt-5 mb-4 p-5 rounded-2 trail-details" style="background-color: #ffffff;">
             <div class="row">
                 <div class="col-md-8">
                     <h1><?php se($trail, "name"); ?></h1>

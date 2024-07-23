@@ -213,9 +213,9 @@ if (isset($_GET["find"])) {
 
 <body class="bg-dark">
     <div class="container">
-        <div class="row gx-1">
+        <div class="row gx-3">
             <div class="col-md-6">
-                <div class="container-sm mt-5 p-5 rounded-2" style="background-color: #c5c5c5;">
+                <div class="container-sm p-5 rounded-2" style="background-color: #ffffff;">
                     <h4>By Location</h4>
                     <hr>
                     <form method="GET" onsubmit="return validate(this);">
@@ -240,7 +240,7 @@ if (isset($_GET["find"])) {
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="container-sm mt-5 p-5 rounded-2" style="background-color: #c5c5c5;">
+                <div class="container-sm p-5 rounded-2" style="background-color: #ffffff;">
                     <h4>By Specification</h4>
                     <hr>
                     <form method="GET" onsubmit="return validate(this);">
@@ -276,7 +276,7 @@ if (isset($_GET["find"])) {
 <?php if (!count($result) == 0) : ?>
     <div class="container">
         <div class="col-md-12">
-                <div class="container-sm mt-5 p-5 rounded-2" style="background-color: #c5c5c5;">
+                <div class="container-sm mt-5 p-5 rounded-2" style="background-color: #ffffff;">
                     <h4>Trails</h4>
                     <hr>
                     <?php foreach ($result as $trail) : ?>

@@ -131,7 +131,7 @@ if (isset($_POST["create_trail"])) {
 ?>
 
 <body class="bg-dark">
-    <div class="container mt-5 mb-4 p-5 rounded-2 w-25" style="background-color: #c5c5c5;">
+    <div class="container mt-5 mb-4 p-5 rounded-2 w-25" style="background-color: #ffffff;">
         <h2>Submit Trail</h2>
         <hr>
         <form method="POST" onsubmit="return validate(this);">
