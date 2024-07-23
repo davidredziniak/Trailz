@@ -78,6 +78,32 @@ if (isset($_GET["id"])) {
             $hasError = true;
         }
 
+        // Check lengths of input for string fields
+        if (strlen($name) > 50) {
+            flash("The length of the Name field should not be greater than 50 chars.", "danger");
+            $hasError = true;
+        }
+        if (strlen($desc) > 400) {
+            flash("The length of the Description field should not be greater than 400 chars.", "danger");
+            $hasError = true;
+        }
+        if (strlen($city) > 30) {
+            flash("The length of the City field should not be greater than 30 chars.", "danger");
+            $hasError = true;
+        }
+        if (strlen($region) > 30) {
+            flash("The length of the State/Region field should not be greater than 30 chars.", "danger");
+            $hasError = true;
+        }
+        if (strlen($country) > 30) {
+            flash("The length of the Country field should not be greater than 30 chars.", "danger");
+            $hasError = true;
+        }
+        if (strlen($features) > 100) {
+            flash("The length of the Features field should not be greater than 100 chars.", "danger");
+            $hasError = true;
+        }
+        
         $lat = floatval($lat);
         $long = floatval($long);
 
@@ -143,35 +169,35 @@ if (isset($_GET["id"])) {
         <form method="POST" onsubmit="return validate(this)">
             <div class="mb-3">
                 <label for="name" class="form-label">Name:</label>
-                <input type="text" name="name" id="name" value="<?php se($trail, "name"); ?>" class="form-control"/>
+                <input type="text" name="name" id="name" value="<?php se($trail, "name"); ?>" class="form-control" />
             </div>
             <div class="mb-3">
                 <label for="desc" class="form-label">Description:</label>
-                <input type="text" name="desc" id="desc" value="<?php se($trail, "description"); ?>" class="form-control"/>
+                <input type="text" name="desc" id="desc" value="<?php se($trail, "description"); ?>" class="form-control" />
             </div>
             <div class="mb-3">
                 <label for="city" class="form-label">City:</label>
-                <input type="text" name="city" id="city" value="<?php se($trail, "city"); ?>" class="form-control"/>
+                <input type="text" name="city" id="city" value="<?php se($trail, "city"); ?>" class="form-control" />
             </div>
             <div class="mb-3">
                 <label for="region" class="form-label">State/Region:</label>
-                <input type="text" name="region" id="region" value="<?php se($trail, "region"); ?>" class="form-control"/>
+                <input type="text" name="region" id="region" value="<?php se($trail, "region"); ?>" class="form-control" />
             </div>
             <div class="mb-3">
                 <label for="country" class="form-label">Country:</label>
-                <input type="text" name="country" id="country" value="<?php se($trail, "country"); ?>" class="form-control"/>
+                <input type="text" name="country" id="country" value="<?php se($trail, "country"); ?>" class="form-control" />
             </div>
             <div class="mb-3">
                 <label for="lat" class="form-label">Latitude:</label>
-                <input type="text" name="lat" id="lat" value="<?php se($trail, "latitude"); ?>" class="form-control"/>
+                <input type="text" name="lat" id="lat" value="<?php se($trail, "latitude"); ?>" class="form-control" />
             </div>
             <div class="mb-3">
                 <label for="long" class="form-label">Longitude:</label>
-                <input type="text" name="long" id="long" value="<?php se($trail, "longitude"); ?>" class="form-control"/>
+                <input type="text" name="long" id="long" value="<?php se($trail, "longitude"); ?>" class="form-control" />
             </div>
             <div class="mb-3">
                 <label for="length" class="form-label">Length:</label>
-                <input type="number" name="length" id="length" value="<?php se($trail, "length"); ?>" class="form-control"/>
+                <input type="number" name="length" id="length" value="<?php se($trail, "length"); ?>" class="form-control" />
             </div>
             <div class="mb-3">
                 <label for="difficulty" class="form-label">Difficulty:</label>
@@ -185,7 +211,7 @@ if (isset($_GET["id"])) {
             </div>
             <div class="mb-3">
                 <label for="feats" class="form-label">Features:</label>
-                <input type="text" name="feats" id="feats" value="<?php se($trail, "features"); ?>" class="form-control"/>
+                <input type="text" name="feats" id="feats" value="<?php se($trail, "features"); ?>" class="form-control" />
             </div>
             <div class="row mt-4">
                 <div class="col"></div><!-- This is a filler column -->
@@ -246,12 +272,12 @@ if (isset($_GET["id"])) {
         }
 
         // Check lengths of input for string fields
-        if (name.length > 30) {
-            flash("The length of the Name field should not be greater than 30 chars.", "warning");
+        if (name.length > 50) {
+            flash("The length of the Name field should not be greater than 50 chars.", "warning");
             return false;
         }
-        if (desc.length > 300) {
-            flash("The length of the Description field should not be greater than 300 chars.", "warning");
+        if (desc.length > 400) {
+            flash("The length of the Description field should not be greater than 400 chars.", "warning");
             return false;
         }
         if (city.length > 30) {
@@ -266,8 +292,8 @@ if (isset($_GET["id"])) {
             flash("The length of the Country field should not be greater than 30 chars.", "warning");
             return false;
         }
-        if (feats.length > 30) {
-            flash("The length of the Features field should not be greater than 30 chars.", "warning");
+        if (feats.length > 100) {
+            flash("The length of the Features field should not be greater than 100 chars.", "warning");
             return false;
         }
 

@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__ . "/../../partials/nav.php");
+
 // Check if user is logged in
 is_logged_in(true);
 

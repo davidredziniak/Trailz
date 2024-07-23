@@ -18,6 +18,7 @@ function insert_trails_into_db($db, $trails)
     flash("Successfully added trails", "success");
 }
 
+
 function process_single_trail($trail)
 {
     // Process trail data
@@ -47,18 +48,19 @@ function process_single_trail($trail)
     if (is_null($length) || $length == "") {
         $length = "0";
     }
-    if (strlen($name) > 50){
+    if (strlen($name) > 50) {
         $name = substr($name, 0, 48);
         $name = $name . "..";
     }
-    if (strlen($desc) > 400){
+    if (strlen($desc) > 400) {
         $desc = substr($desc, 0, 398);
         $desc = $desc . "..";
     }
-    if (strlen($feats) > 50){
-        $feats = substr($feats, 0, 48);
+    if (strlen($feats) > 100) {
+        $feats = substr($feats, 0, 98);
         $feats = $feats . "..";
     }
+
 
     // Prepare record
     $record = [];
