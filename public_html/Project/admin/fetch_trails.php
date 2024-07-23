@@ -30,7 +30,7 @@ if (isset($_GET["lat"]) && isset($_GET["long"]) && isset($_GET["radius"])) {
         <form>
             <div class="input-group mb-3">
                 <span class="input-group-text">Latitude</span>
-                <input type="text" id="latitude" class="form-control" name="lat" placeholder="-90.00 to 90.00"  aria-describedby="basic-addon1">
+                <input type="text" id="latitude" class="form-control" name="lat" placeholder="-90.00 to 90.00" aria-describedby="basic-addon1">
             </div>
             <div class="input-group mb-3">
                 <span class="input-group-text">Longitude</span>
@@ -42,13 +42,6 @@ if (isset($_GET["lat"]) && isset($_GET["long"]) && isset($_GET["radius"])) {
             </div>
             <input type="submit" class="btn btn-primary btn-md" value="Fetch" />
         </form>
-    </div>
-    <div class="container-sm p-5 rounded-2 mt-5" style="background-color: #ffffff;">
-        <h2>Result</h2>
-        <div class="row">
-            
-        </div>
-    </div>
     </div>
 </body>
 
