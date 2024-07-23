@@ -45,12 +45,16 @@ if (isset($_GET["id"])) {
     die(header("Location: " . get_url("view_trails.php")));
 }
 ?>
+<script>
+    setTimeout(function() {
+        window.history.go(-1);
+    }, 3000);
+</script>
 
 <body class="bg-dark">
     <div class="container">
     </div>
 </body>
-
 <?php
 require_once(__DIR__ . "/../../partials/flash.php");
 ?>
