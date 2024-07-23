@@ -7,6 +7,7 @@ if (!has_role("Admin")) {
     die(header("Location: " . get_url("home.php")));
 }
 
+
 $result = [];
 if (isset($_GET["lat"]) && isset($_GET["long"]) && isset($_GET["radius"])) {
     $data = ["lat" => $_GET["lat"], "lon" => $_GET["long"], "radius" => $_GET["radius"], "per_page" => "1000"];
@@ -22,12 +23,45 @@ if (isset($_GET["lat"]) && isset($_GET["long"]) && isset($_GET["radius"])) {
     }
 }
 ?>
+<script>
+    function validate(form) {
+        let lat = form.lat.value;
+        let long = form.long.value;
+        let radius = form.radius.value;
+
+        // Check if any of the fields are empty
+        if (lat === "" || long === "" || radius === "") {
+            flash("All fields must be filled out.", "warning");
+            return false;
+        }
+
+        // Check if latitude is valid using regex
+        if (!/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$/.test(lat)) {
+            flash("Latitude is invalid. Enter a value from -90.00 to 90.00", "warning");
+            return false;
+        }
+
+        // Check if longitude is valid using regex
+        if (!/^[-]?([1-9]?\d(\.\d+)?|1[0-7]\d(\.\d+)?|180(\.0+)?)$/i.test(long)) {
+            flash("Longitude is invalid. Enter a value from -180.00 to 180.00", "warning");
+            return false;
+        }
+
+        // Check if radius is valid (non negative)
+        if (parseFloat(radius) <= 0 || parseFloat(radius) > 100) {
+            flash("Please enter a radius in range 1 to 100.", "warning");
+            return false;
+        }
+
+        return true;
+    }
+</script>
 
 <body class="bg-dark">
     <div class="container-sm p-5 rounded-2" style="background-color: #ffffff;">
         <h1>Fetch Trail Info</h1>
         <p>Add trails to the database by submitting a latitude, longitude, and radius.</p>
-        <form>
+        <form onsubmit="return validate(this)">
             <div class="input-group mb-3">
                 <span class="input-group-text">Latitude</span>
                 <input type="text" id="latitude" class="form-control" name="lat" placeholder="-90.00 to 90.00" aria-describedby="basic-addon1">
