@@ -1,41 +1,73 @@
 
 .alert {
-    padding: 5px;
-    width: 20%;
-    color: white;
-}
-
-.alert-success {
-    background-color: green;
-}
-
-.alert-warning {
-    background-color: yellow;
-    color: black;
-}
-
-.alert-danger {
-    background-color: red;
-    color: black;
-}
-
-.alert-info {
-    background-color: teal;
+    width: 40%;
 }
 
 h1, h2, h3,
 h4, h5, h6 {
-    color: rgb(173, 172, 175);
-}
-nav li {
-    display: inline;
-    background-color: rgb(173, 172, 175);
-    padding: 10px;
+    color: #686969;
 }
 
-nav li a {
-    color: rgb(0, 0, 0);
+.container {
+    width: 60%;
+    margin: auto;
+}
+
+.header {
+    background-color: white;
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+}
+
+.header .logo h2 {
+    color: #f24d25;
+}
+
+.header .navbar {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.header .navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.header .navbar ul li a {
     text-decoration: none;
+    color: #333333de;
+}
+
+.header .navbar ul li a:hover {
+    color: white;
+}
+
+.nav-item {
+    box-sizing: border-box;
+}
+
+.nav-item a {
+    margin-right: 0;
+    margin-left: 0;
+    padding: 20px 35px;
+    color: white;
+}
+
+.nav-item:hover {
+    background-color: #d8441f !important;
+    color: white !important;
+}
+
+.nav-item .active {
+    background: #d8441f;
+    color: white !important;
 }
 
 input {
@@ -44,11 +76,64 @@ input {
     background: rgb(255, 255, 255);
 }
 
-label {
-    color: rgb(255, 255, 255);
+#droplabel {
+    margin-right: 0;
+    margin-left: 0;
+    padding: 20px 35px;
+}
+
+#droplabel:hover {
+    color: white !important;
+    background-color: #d8441f !important;
+}
+
+#menuDropdowns {
+    display: none;
+}
+
+#menuList:hover #menuDropdowns {
+    display: block;
+}
+
+.dropdown-item:hover {
+    background-color: #d8441f !important;
+    color:white !important;
+}
+
+.btn-primary {
+    background-color: #d8441f !important;
+    border-color: #ce3a15 !important;
 }
 
 body {
-    background-color: rgb(58, 85, 154);
-    color: rgb(120, 115, 120);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Trail details page */
+.trail-details h1 {
+    font-size: 2.5rem;
+}
+
+.trail-details img {
+    max-width: 100%;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.location-pin {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.location-pin img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.btn-group a {
+    margin-right: 10px;
 }
