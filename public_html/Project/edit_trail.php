@@ -112,8 +112,8 @@ if (isset($_GET["id"])) {
             case "int":
                 $difficulty = "Intermediate";
                 break;
-            case "hard":
-                $difficulty = "Hard";
+            case "adv":
+                $difficulty = "Advanced";
                 break;
         }
 
@@ -180,7 +180,7 @@ if (isset($_GET["id"])) {
                     <option value="easy" <?php if ($trail["difficulty"]  == "Easiest") echo 'selected="Selected"' ?>>Easiest</option>
                     <option value="beg" <?php if ($trail["difficulty"] == "Beginner") echo 'selected="Selected"' ?>>Beginner</option>
                     <option value="int" <?php if ($trail["difficulty"]  == "Intermediate") echo 'selected="Selected"' ?>>Intermediate</option>
-                    <option value="hard" <?php if ($trail["difficulty"] == "Hard") echo 'selected="Selected"' ?>>Hard</option>
+                    <option value="adv" <?php if ($trail["difficulty"] == "Advanced") echo 'selected="Selected"' ?>>Hard</option>
                 </select>
             </div>
             <div class="mb-3">
@@ -240,7 +240,7 @@ if (isset($_GET["id"])) {
         }
 
         // Check if difficulty selection is valid
-        if (diff != "easy" && diff != "beg" && diff != "int" && diff != "hard") {
+        if (diff != "easy" && diff != "beg" && diff != "int" && diff != "adv") {
             flash("Invalid difficulty selection, please select a drop down option.", "warning");
             return false;
         }
