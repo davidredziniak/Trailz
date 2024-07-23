@@ -111,7 +111,7 @@ if (isset($_POST["create_trail"])) {
 
     if (!$hasError) {
         $db = getDB();
-        $stmt = $db->prepare("INSERT INTO `Trails` (name, description, city, region, country, coord, length, difficulty, features) VALUES(:name, :desc, :city, :region, :country, POINT(:lat, :long), :length, :difficulty, :features)");
+        $stmt = $db->prepare("INSERT INTO `Trails` (name, description, city, region, country, coord, length, difficulty, features, thumbnail) VALUES(:name, :desc, :city, :region, :country, POINT(:lat, :long), :length, :difficulty, :features, '')");
         try {
             $stmt->execute([":name" => $name, ":desc" => $desc, ":city" => $city, ":region" => $region, ":country" => $country, ":lat" => $lat, ":long" => $long, ":length" => $length, ":difficulty" => $difficulty, ":features" => $features]);
             $trail_id = $db->lastInsertId();
@@ -124,6 +124,7 @@ if (isset($_POST["create_trail"])) {
                 flash("An unexpected error occurred submitting user trail information, please try again", "danger");
             }
         } catch (Exception $e) {
+            echo '<pre>' . var_dump($e) . '</pre>';
             flash("An unexpected error occurred initially when submitting a new trail, please try again", "danger");
         }
     }
