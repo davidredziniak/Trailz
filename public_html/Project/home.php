@@ -27,6 +27,14 @@ if (is_logged_in(true)) {
     }
 }
 
+function get_image_url($thumb){
+    if (empty($thumb) || $thumb == null){
+        echo './images/placeholder.jpg';
+    } else {
+        echo $thumb;
+    }
+}
+
 ?>
 
 <body class="bg-dark">
@@ -58,8 +66,8 @@ if (is_logged_in(true)) {
                                     <div class="col-md-4">
                                         <a href="./trail.php?id=<?php se($trails[$i], "id", "", true) ?>" style="text-decoration: none;">
                                             <div class="card">
-                                                <div class="card-body" style="background-size: cover; background-image: url(<?php se($trails[$i], "thumbnail", "", true); ?>)">
-                                                </div>
+                                            <div class="card-body" style="background-size: cover; background-image: url( <?php get_image_url(se($trails[$i], "thumbnail", "", false)); ?>)">
+                                            </div>
                                                 <div class="card-footer">
                                                     <div><strong><?php se($trails[$i], "name", "", true); ?></strong></div>
                                                     <?php echo get_diff_html($trails[$i]["difficulty"]) ?>
@@ -76,7 +84,7 @@ if (is_logged_in(true)) {
                                     <div class="col-md-4">
                                         <a href="./trail.php?id=<?php se($trails[$i], "id", "", true) ?>" style="text-decoration: none;">
                                             <div class="card">
-                                                <div class="card-body" style="background-size: cover; background-image: url(<?php se($trails[$i], "thumbnail", "", true); ?>)">
+                                                <div class="card-body" style="background-size: cover; background-image: url( <?php get_image_url(se($trails[$i], "thumbnail", "", false)); ?>)">
                                                 </div>
                                                 <div class="card-footer">
                                                     <div><strong><?php se($trails[$i], "name", "", true); ?></strong></div>

@@ -47,8 +47,15 @@ if (isset($_GET["id"])) {
             $favorite = is_favorited($id);
         }
     }
-}
 
+    function get_image_url($thumb){
+        if (empty($thumb) || $thumb == null){
+            echo './images/placeholder.jpg';
+        } else {
+            echo $thumb;
+        }
+    }
+}
 ?>
 
 <body class="bg-dark">
@@ -59,12 +66,12 @@ if (isset($_GET["id"])) {
                     <h1><?php se($trail, "name"); ?></h1>
                     <p><?php se($trail, "city"); ?>, <?php se($trail, "region", "", true); ?>, <?php se($trail, "country", "", true); ?></p>
                     <p><b>Length:</b> <?php se($trail, "length", "", true); ?> miles</p>
-                    <p><b>Description:</b> <?php se($trail, "description", "", true); ?></p>
+                    <p><b>Description:</b> <?php if(se($trail, "description") == "") : echo 'N/A'; ?><?php else: se($trail, "description", "", true) ?><?php endif ?></p>
                     <p><b>Difficulty:</b> <?php se($trail, "difficulty", "", true); ?></p>
-                    <p><b>Features:</b> <?php se($trail, "features", "", true) ?></p>
+                    <p><b>Features:</b> <?php if(se($trail, "features") == "") : echo 'N/A'; ?><?php else: se($trail, "features", "", true) ?><?php endif ?></p>
                 </div>
                 <div class="col-md-4 text-center">
-                    <img src="<?php echo $trail['thumbnail'] ?>" alt="Hiking Trail Image">
+                    <img src="<?php get_image_url(se($trail, "thumbnail", "", false)) ?>" alt="Hiking Trail Image">
                     <div class="location-pin">
                         <img src="https://img.icons8.com/ios-filled/50/000000/marker.png" alt="Location Pin">
                         <span><?php se($trail, "latitude", "", true) ?>, <?php se($trail, "longitude", "", true) ?></span>

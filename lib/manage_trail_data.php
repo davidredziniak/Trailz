@@ -11,7 +11,7 @@ function insert_trails_into_db($db, $trails)
             $stmt->execute([":name" => $trail["name"], ":description" => $trail["description"], ":city" => $trail["city"], ":region" => $trail["region"], ":country" => $trail["country"], ":lat" => $trail["lat"], ":long" => $trail["long"], ":length" => $trail["length"], ":difficulty" => $trail["difficulty"], ":features" => $trail["features"], ":api_id" => $trail["api_id"], ":thumbnail" => $trail["thumbnail"]]);
         } catch (Exception $e) {
             error_log(var_export($e, true));
-            flash("Error adding trails", "danger");
+            flash("Error adding trails" . var_export($e), "danger");
             break;
         }
     }
