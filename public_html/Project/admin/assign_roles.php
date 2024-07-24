@@ -79,7 +79,7 @@ if (isset($_POST["username"])) {
                 <div class="input-group mb-3 mt-4">
                     <input type="text" class="form-control" name="username" placeholder="Username" aria-label="Recipient's username" aria-describedby="basic-addon2">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="submit" value="Search">Search</button>
+                        <button class="btn btn-outline-primary" type="submit" value="Search">Search</button>
                     </div>
                 </div>
             </form>

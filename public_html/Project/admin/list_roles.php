@@ -44,46 +44,58 @@ try {
 }
 
 ?>
-<h1>List Roles</h1>
-<form method="POST">
-    <input type="search" name="role" placeholder="Role Filter" value="<?php se($_POST, "role");?>" />
-    <input type="submit" value="Search" />
-</form>
-<table>
-    <thead>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Active</th>
-        <th>Action</th>
-    </thead>
-    <tbody>
-        <?php if (empty($roles)) : ?>
-            <tr>
-                <td colspan="100%">No roles</td>
-            </tr>
-        <?php else : ?>
-            <?php foreach ($roles as $role) : ?>
-                <tr>
-                    <td><?php se($role, "id"); ?></td>
-                    <td><?php se($role, "name"); ?></td>
-                    <td><?php se($role, "description"); ?></td>
-                    <td><?php echo (se($role, "is_active", 0, false) ? "active" : "disabled"); ?></td>
-                    <td>
-                        <form method="POST">
-                            <input type="hidden" name="role_id" value="<?php se($role, 'id'); ?>" />
-                            <?php if (isset($search) && !empty($search)) : ?>
-                                <?php /* if this is part of a search, lets persist the search criteria so it reloads correctly*/ ?>
-                                <input type="hidden" name="role" value="<?php se($search, null); ?>" />
-                            <?php endif; ?>
-                            <input type="submit" value="Toggle" />
-                        </form>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </tbody>
-</table>
+
+<body class="bg-dark">
+    <div class="col-lg-12">
+        <div class="container mt-5 mb-4 p-5 rounded-2 trail-details" style="background-color: #ffffff;">
+            <h1>List Roles</h1>
+            <form method="POST">
+                <div class="input-group mb-3 mt-4">
+                    <input type="search" class="form-control" name="role" placeholder="Role Filter" value="<?php se($_POST, "role"); ?>" aria-label="Role filter" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-primary" type="submit" value="Search">Search</button>
+                    </div>
+                </div>
+            </form>
+            <table class="table">
+                <thead>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Active</th>
+                    <th>Action</th>
+                </thead>
+                <tbody>
+                    <?php if (empty($roles)) : ?>
+                        <tr>
+                            <td colspan="100%">No roles</td>
+                        </tr>
+                    <?php else : ?>
+                        <?php foreach ($roles as $role) : ?>
+                            <tr>
+                                <td><?php se($role, "id"); ?></td>
+                                <td><?php se($role, "name"); ?></td>
+                                <td><?php se($role, "description"); ?></td>
+                                <td><?php echo (se($role, "is_active", 0, false) ? "ACTIVE" : "INACTIVE"); ?></td>
+                                <td>
+                                    <form method="POST">
+                                        <input type="hidden" name="role_id" value="<?php se($role, 'id'); ?>" />
+                                        <?php if (isset($search) && !empty($search)) : ?>
+                                            <?php /* if this is part of a search, lets persist the search criteria so it reloads correctly*/ ?>
+                                            <input type="hidden" name="role" value="<?php se($search, null); ?>" />
+                                        <?php endif; ?>
+                                        <input type="submit" value="Toggle" class="btn btn-primary" />
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
 <?php
 //note we need to go up 1 more directory
 require_once(__DIR__ . "/../../../partials/flash.php");
