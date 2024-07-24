@@ -66,7 +66,7 @@ if (isset($_GET["id"])) {
                     <h1><?php se($trail, "name"); ?></h1>
                     <p><?php se($trail, "city"); ?>, <?php se($trail, "region", "", true); ?>, <?php se($trail, "country", "", true); ?></p>
                     <p><b>Length:</b> <?php se($trail, "length", "", true); ?> miles</p>
-                    <p><b>Description:</b> <?php se($trail, "description", "", true); ?></p>
+                    <p><b>Description:</b> <?php if(se($trail, "description") == "") : echo 'N/A'; ?><?php else: se($trail, "description", "", true) ?><?php endif ?></p>
                     <p><b>Difficulty:</b> <?php se($trail, "difficulty", "", true); ?></p>
                     <p><b>Features:</b> <?php if(se($trail, "features") == "") : echo 'N/A'; ?><?php else: se($trail, "features", "", true) ?><?php endif ?></p>
                 </div>
