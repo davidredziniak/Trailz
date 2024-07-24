@@ -105,6 +105,23 @@ input {
     border-color: #ce3a15 !important;
 }
 
+.btn-primary:hover {
+    background-color: #892b13 !important;
+    border-color: #6e200d !important;
+}
+
+.btn-favorite {
+    background-color: #e3a409;
+    border-color: #cd9409;
+    color: white;
+}
+
+.btn-favorite:hover {
+    background-color: #906907;
+    border-color: #694c05;
+    color: white;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;

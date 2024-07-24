@@ -73,3 +73,63 @@ function is_trail_owner($id)
 
     return false;
 }
+
+function is_favorited($id){
+    $user_id = get_user_id();
+    $db = getDB();
+    $stmt = $db->prepare("SELECT 1 FROM `User_Favorites` WHERE trail_id=:id AND user_id=:user_id LIMIT 1;");
+    try {
+        $stmt->execute([":id" => intval($id), ":user_id" => intval($user_id)]);
+        $r = $stmt->fetchAll();
+        if($r){
+            return true;
+        }
+    } catch (Exception $e) {
+        flash(". var_export($e, true) .", "danger");
+    }
+
+    return false;
+}
+
+function delete_favorite($user_id, $trail_id){
+    $db = getDB();
+    $stmt = $db->prepare("DELETE FROM `User_Favorites` WHERE user_id=:user_id AND trail_id=:trail_id");
+    try {
+        $stmt->execute([":user_id" => intval($user_id), ":trail_id" => intval($trail_id)]);
+        return true;
+    } catch (Exception $e){
+        return false;
+    }
+}
+
+function add_favorite($user_id, $trail_id){
+    $db = getDB();
+    $stmt = $db->prepare("INSERT INTO `User_Favorites` (user_id, trail_id) VALUES (:user_id, :trail_id)");
+    try {
+        $stmt->execute([":user_id" => intval($user_id), ":trail_id" => intval($trail_id)]);
+        return true;
+    } catch (Exception $e){
+        return false;
+    }
+}
+
+function toggle_favorite($id){
+    $user_id = get_user_id();
+    $db = getDB();
+
+    // Check if user already has the trail favorited
+    $stmt = $db->prepare("SELECT 1 FROM `User_Favorites` WHERE trail_id=:id AND user_id=:user_id LIMIT 1;");
+    try {
+        $stmt->execute([':id' => intval($id), ":user_id" => intval($user_id)]);
+        $r = $stmt->fetchAll();
+
+        if($r){
+            delete_favorite($user_id, $id);
+        } else {
+            add_favorite($user_id, $id);
+        }
+    } catch (Exception $e){
+        flash("An error has occured when toggling the User Favorites record.", "danger");
+        return false;
+    }
+}
