@@ -60,7 +60,7 @@ if (isset($_GET["lat"]) && isset($_GET["long"]) && isset($_GET["radius"])) {
 <body class="bg-dark">
     <div class="container-sm p-5 rounded-2" style="background-color: #ffffff;">
         <h1>Fetch Trail Info</h1>
-        <p>Add trails to the database by submitting a latitude, longitude, and radius.</p>
+        <p>Add trails to the database from the API by searching the area given a latitude, longitude, and radius.</p>
         <form onsubmit="return validate(this)">
             <div class="input-group mb-3">
                 <span class="input-group-text">Latitude</span>
@@ -74,7 +74,10 @@ if (isset($_GET["lat"]) && isset($_GET["long"]) && isset($_GET["radius"])) {
                 <span class="input-group-text">Radius</span>
                 <input type="text" id="radius" class="form-control" name="radius" placeholder="100 miles max." aria-describedby="basic-addon1">
             </div>
-            <input type="submit" class="btn btn-primary btn-md" value="Fetch" />
+            <div class="row mt-4">
+                <div class="col"></div><!-- This is a filler column -->
+                <div class="col-auto"><input type="submit" class="btn btn-primary btn-md" value="Fetch" /></div>
+            </div>
         </form>
     </div>
 </body>
