@@ -46,7 +46,7 @@ function get_image_url($thumb){
         <div class="container mt-5 mb-4 p-5 rounded-2" style="background-color: #ffffff;">
             <div class="row ms-2">
                 <div class="reviews-top col-lg-12">
-                    <h1 class="mb-2"><b>Recently added Trails</b></h1>
+                    <h1 class="mb-2"><b>Recently added</b></h1>
                 </div>
             </div>
             <?php if (count($trails) == 12) : ?>

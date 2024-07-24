@@ -26,6 +26,7 @@ h4, h5, h6 {
 
 .header .logo h2 {
     color: #f24d25;
+    font-weight: 600;
 }
 
 .header .navbar {
