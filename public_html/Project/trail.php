@@ -71,7 +71,7 @@ if (isset($_GET["id"])) {
                     <p><b>Features:</b> <?php if(se($trail, "features") == "") : echo 'N/A'; ?><?php else: se($trail, "features", "", true) ?><?php endif ?></p>
                 </div>
                 <div class="col-md-4 text-center">
-                    <img src="<?php get_image_url(se($trail, "thumbnail"), "", false) ?>" alt="Hiking Trail Image">
+                    <img src="<?php get_image_url(se($trail, "thumbnail", "", false)) ?>" alt="Hiking Trail Image">
                     <div class="location-pin">
                         <img src="https://img.icons8.com/ios-filled/50/000000/marker.png" alt="Location Pin">
                         <span><?php se($trail, "latitude", "", true) ?>, <?php se($trail, "longitude", "", true) ?></span>
