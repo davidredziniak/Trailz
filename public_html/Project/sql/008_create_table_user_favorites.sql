@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `User_Trails` (
+CREATE TABLE IF NOT EXISTS `User_Favorites` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`user_id` INT NOT NULL,
 	`trail_id` INT NOT NULL,
