@@ -68,7 +68,7 @@ if (isset($_GET["id"])) {
                     <p><b>Length:</b> <?php se($trail, "length", "", true); ?> miles</p>
                     <p><b>Description:</b> <?php se($trail, "description", "", true); ?></p>
                     <p><b>Difficulty:</b> <?php se($trail, "difficulty", "", true); ?></p>
-                    <p><b>Features:</b> <?php se($trail, "features", "", true) ?></p>
+                    <p><b>Features:</b> <?php if(se($trail, "features") == "") : echo 'N/A'; ?><?php else: se($trail, "features", "", true) ?><?php endif ?></p>
                 </div>
                 <div class="col-md-4 text-center">
                     <img src="<?php get_image_url(se($trail, "thumbnail"), "", false) ?>" alt="Hiking Trail Image">
