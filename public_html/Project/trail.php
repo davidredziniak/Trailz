@@ -77,8 +77,8 @@ if (isset($_GET["id"])) {
                                 <button class="btn btn-danger" name="favorite" value="delete" type="submit">Unfavorite</button>
                             <?php endif ?>
                             <?php if (has_role("Admin") || is_trail_owner($id)) : ?>
-                                <?php echo '<button class="btn btn-primary" type="button"  onclick="location.href="./edit_trail.php?id=' . $id . '">Edit</button>'; ?>
-                                <?php echo '<button class="btn btn-danger" type="button"  onclick="location.href="./delete_trail.php?id=' . $id . '">Delete</button>'; ?>
+                                <?php echo '<a href="./edit_trail.php?id=' . $id . '" class="btn btn-primary link-in-button">Edit</a>'; ?>
+                                <?php echo '<a href="./delete_trail.php?id=' . $id . '" class="link-in-button btn btn-danger" style="margin-left: -10;">Delete</a>'; ?>
                             <?php endif; ?>
                         </div>
                     </form>

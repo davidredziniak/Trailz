@@ -122,6 +122,11 @@ input {
     color: white;
 }
 
+.link-in-button {
+    text-decoration: none;
+    color: white;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;

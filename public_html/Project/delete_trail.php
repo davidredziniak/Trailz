@@ -19,6 +19,7 @@ if (isset($_GET["id"])) {
             $stmt->bindValue(":id", $id);
             $stmt->execute();
             $r = $stmt->fetch();
+
             // Delete User_Trails if it exists (Not API generated)
             if ($r) {
                 $stmt2 = $db->prepare("DELETE FROM `User_Trails` WHERE trail_id=:id;");
@@ -29,11 +30,20 @@ if (isset($_GET["id"])) {
                     flash("An unexpected error occurred when deleting the user_trails record.", "danger");
                 }
             }
+            
+            // Delete User_Favorites associations
+            $stmt3 = $db->prepare("DELETE FROM `User_Favorites` WHERE trail_id=:id;");
+            $stmt3->bindValue(":id", $id);
+            try {
+                $stmt3->execute();
+            } catch (Exception $e) {
+                flash("An unexpected error occurred when deleting the user_favorites records.", "danger");
+            }
 
             // Delete the Trails record
-            $stmt3 = $db->prepare("DELETE FROM `Trails` WHERE id=:id;");
+            $stmt4 = $db->prepare("DELETE FROM `Trails` WHERE id=:id;");
             try {
-                $stmt3->execute([":id" => $id]);
+                $stmt4->execute([":id" => $id]);
                 flash("Successfully deleted the trail.", "success");
             } catch (Exception $e) {
                 flash("An unexpected error occurred when deleting the trail, please try again", "danger");
