@@ -75,6 +75,7 @@ if (isset($_POST["username"])) {
     <div class="col-lg-12">
         <div class="container mt-5 mb-4 p-5 rounded-2 trail-details" style="background-color: #ffffff;">
             <h1>Assign Roles</h1>
+            <p>Assign user roles to a specified user.</p>
             <form method="POST">
                 <div class="input-group mb-3 mt-4">
                     <input type="text" class="form-control" name="username" placeholder="Username" aria-label="Recipient's username" aria-describedby="basic-addon2">

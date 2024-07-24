@@ -49,6 +49,7 @@ try {
     <div class="col-lg-12">
         <div class="container mt-5 mb-4 p-5 rounded-2 trail-details" style="background-color: #ffffff;">
             <h1>List Roles</h1>
+            <p>View currently active and inactive roles available.</p>
             <form method="POST">
                 <div class="input-group mb-3 mt-4">
                     <input type="search" class="form-control" name="role" placeholder="Role Filter" value="<?php se($_POST, "role"); ?>" aria-label="Role filter" aria-describedby="basic-addon2">

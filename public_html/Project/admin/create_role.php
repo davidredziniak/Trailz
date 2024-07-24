@@ -33,6 +33,7 @@ if (isset($_POST["name"]) && isset($_POST["description"])) {
     <div class="col-lg-12">
         <div class="container mt-5 mb-4 p-5 rounded-2 trail-details" style="background-color: #ffffff;">
             <h1>Create Role</h1>
+            <p>Create a new role to be assigned to registered users.</p>
             <div class="mt-4">
                 <form method="POST">
                     <div>
