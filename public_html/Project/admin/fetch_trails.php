@@ -58,7 +58,7 @@ if (isset($_GET["lat"]) && isset($_GET["long"]) && isset($_GET["radius"])) {
 </script>
 
 <body class="bg-dark">
-    <div class="container-sm p-5 rounded-2" style="background-color: #ffffff;">
+    <div class="container-sm mt-5 p-5 rounded-2" style="background-color: #ffffff;">
         <h1>Fetch Trail Info</h1>
         <p>Add trails to the database from the API by searching the area given a latitude, longitude, and radius.</p>
         <form onsubmit="return validate(this)">

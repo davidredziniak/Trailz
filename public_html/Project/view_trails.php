@@ -211,7 +211,7 @@ if (isset($_GET["find"])) {
 ?>
 
 <body class="bg-dark">
-    <div class="container">
+    <div class="container mt-5">
         <div class="row gx-3">
             <div class="col-md-6">
                 <div class="container-sm p-5 rounded-2" style="background-color: #ffffff;">
