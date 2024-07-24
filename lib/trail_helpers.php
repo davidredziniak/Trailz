@@ -45,7 +45,7 @@ function get_trail_by_id($id)
 
 function get_latest_trails(){
     $db = getDB();
-    $query = "SELECT id, name, country, length, difficulty, thumbnail FROM `Trails` ORDER BY created DESC LIMIT 6";
+    $query = "SELECT id, name, country, length, difficulty, thumbnail FROM `Trails` ORDER BY created DESC LIMIT 12";
     $stmt = $db->prepare($query);
     try {
         $stmt->execute();
