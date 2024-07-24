@@ -385,7 +385,7 @@ if (isset($_GET["find"])) {
             }
 
             // Check if difficulty selection is valid
-            if (diff !== "unsp" && diff != "easy" && diff != "beg" && diff != "int" && diff != "adv") {
+            if (diff !== "" && diff !== "unsp" && diff != "easy" && diff != "beg" && diff != "int" && diff != "adv") {
                 flash("Invalid difficulty selection, please select a drop down option.", "warning");
                 return false;
             }

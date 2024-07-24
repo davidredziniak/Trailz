@@ -19,7 +19,7 @@ if (isset($_GET["lat"]) && isset($_GET["long"]) && isset($_GET["radius"])) {
     if (se($result, "status", 400, false) == 200 && isset($result["response"])) {
         process_trails($result);
     } else {
-        $result = [];
+        flash("Error occured when fetching trails from API.", "danger");
     }
 }
 ?>
