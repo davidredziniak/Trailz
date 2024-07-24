@@ -8,10 +8,47 @@ is_logged_in(true);
 if (isset($_GET["id"])) {
     $id = intval(se($_GET, "id", 0, false));
     is_valid_trail($id, true);
+
+    // Retrieve trail data
+    $trail = get_trail_by_id($id);
+
+    // Get if user has it favorited
+    $favorite = is_favorited($id);
+
+    $user_id = get_user_id();
+
+    if (isset($_POST["favorite"])) {
+        $type = se($_POST, "favorite", "", false);
+        $hasError = false;
+
+        // Validate option chosen is one of two available
+        if ($type !== "add" && $type !== "delete") {
+            $hasError = true;
+            flash("Unhandled option selection for favoriting a trail.", "danger");
+        }
+
+        if (!$hasError) {
+            // Call helper function to either add or delete trail from favorites
+            if ($type == "add") {
+                if (add_favorite($user_id, $id)) {
+                    flash("Successfully added this trail to favorites!", "success");
+                } else {
+                    flash("Error when adding this trail to favorites.", "danger");
+                }
+            } else {
+                if (delete_favorite($user_id, $id)) {
+                    flash("Successfully deleted this trail from favorites!", "success");
+                } else {
+                    flash("Error when deleting this trail from favorites.", "danger");
+                }
+            }
+
+            // Update
+            $favorite = is_favorited($id);
+        }
+    }
 }
 
-// Retrieve trail data
-$trail = get_trail_by_id($id);
 ?>
 
 <body class="bg-dark">
@@ -32,12 +69,19 @@ $trail = get_trail_by_id($id);
                         <img src="https://img.icons8.com/ios-filled/50/000000/marker.png" alt="Location Pin">
                         <span><?php se($trail, "latitude", "", true) ?>, <?php se($trail, "longitude", "", true) ?></span>
                     </div>
-                    <div class="btn-group mt-5">
-                        <?php if (has_role("Admin") || is_trail_owner($id)) : ?>
-                            <?php echo '<a href="./edit_trail.php?id=' . $id . '" class="btn btn-primary">Edit</a>'; ?>
-                            <?php echo '<a href="./delete_trail.php?id=' . $id  . '" class="btn btn-danger">Delete</a>'; ?>
-                        <?php endif; ?>
-                    </div>
+                    <form method="POST">
+                        <div class="btn-group mt-5" role="group">
+                            <?php if (!$favorite) : ?>
+                                <button class="btn btn-favorite" name="favorite" value="add" type="submit">Favorite</button>
+                            <?php else : ?>
+                                <button class="btn btn-danger" name="favorite" value="delete" type="submit">Unfavorite</button>
+                            <?php endif ?>
+                            <?php if (has_role("Admin") || is_trail_owner($id)) : ?>
+                                <?php echo '<a href="./edit_trail.php?id=' . $id . '" class="btn btn-primary link-in-button">Edit</a>'; ?>
+                                <?php echo '<a href="./delete_trail.php?id=' . $id . '" class="link-in-button btn btn-danger" style="margin-left: -10;">Delete</a>'; ?>
+                            <?php endif; ?>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

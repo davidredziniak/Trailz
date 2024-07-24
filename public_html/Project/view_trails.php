@@ -8,7 +8,7 @@ $result = [];
 <?php
 
 if (isset($_GET["find"])) {
-    $difficulties = ["easy", "beg", "int", "adv"];
+    $difficulties = ["unsp", "easy", "beg", "int", "adv"];
     $hasError = false;
     $type = se($_GET, "find", null, false);
 
@@ -154,6 +154,9 @@ if (isset($_GET["find"])) {
             } else {
                 $search_diff = true;
                 switch ($diff) {
+                    case "unsp":
+                        $diff = "Unspecified";
+                        break;
                     case "beg":
                         $diff = "Beginner";
                         break;
@@ -255,6 +258,7 @@ if (isset($_GET["find"])) {
                             <label for="difficulty" class="form-label">Difficulty:</label>
                             <select class="form-select" name="difficulty" id="difficulty">
                                 <option value="">Please choose</option>
+                                <option value="unsp">Unspecified</option>
                                 <option value="easy">Easiest</option>
                                 <option value="beg">Beginner</option>
                                 <option value="int">Intermediate</option>
@@ -381,7 +385,7 @@ if (isset($_GET["find"])) {
             }
 
             // Check if difficulty selection is valid
-            if (diff !== "" && diff != "easy" && diff != "beg" && diff != "int" && diff != "adv") {
+            if (diff !== "unsp" && diff != "easy" && diff != "beg" && diff != "int" && diff != "adv") {
                 flash("Invalid difficulty selection, please select a drop down option.", "warning");
                 return false;
             }
