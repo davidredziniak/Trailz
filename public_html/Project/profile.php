@@ -18,14 +18,14 @@ if (isset($_GET["id"])) {
     // Get user's favorite trails
     $favorites = get_favorites_by_user_id($id);
 
-    function get_image_url($thumb)
-    {
-        if (empty($thumb) || $thumb == null) {
-            echo './images/placeholder.jpg';
-        } else {
-            echo $thumb;
-        }
-    }
+    // Check if user is viewing their own profile
+    $is_own_profile = (get_user_id() == $id ? true : false);
+
+    $is_admin = has_role("Admin");
+}
+else{
+    flash("There was no specific user ID set in the URL.", "warning");
+    die(header("Location: " . get_url("home.php")));
 }
 ?>
 
@@ -46,7 +46,7 @@ if (isset($_GET["id"])) {
                         <h2>Submitted Trails (<?php echo count($trails) ?>)</h2>
                     </div>
                     <div class="col-md-4 justify-content-end d-sm-flex">
-                        <?php if (count($trails) !== 0 ) : ?><h6><a href="./submissions.php?id=<?php echo $id ?>">View all</a></h6><?php endif ?>
+                        <?php if (count($trails) !== 0) : ?><h6><a href="./submissions.php?id=<?php echo $id ?>">View all</a></h6><?php endif ?>
                     </div>
                 </div>
                 <div class="row mt-4">
@@ -60,15 +60,15 @@ if (isset($_GET["id"])) {
                                 <th>Link</th>
                             </thead>
                             <tbody>
-                                <?php for($i = 0; $i < 10; $i ++) : ?>
+                                <?php for ($i = 0; $i < 10; $i++) : ?>
                                     <?php if (array_key_exists($i, $trails)) : ?>
-                                    <tr>
-                                        <td><?php se($trails[$i], "name", "", true); ?></td>
-                                        <td><?php se($trails[$i], "country", "", true); ?></td>
-                                        <td><?php se($trails[$i], "difficulty", "", true); ?></td>
-                                        <td><?php echo date('m/d/Y', $trails[$i]["created"]); ?></td>
-                                        <td><a href="./trail.php?id=<?php se($trails[$i], "id"); ?>">View</a></td>
-                                    </tr>
+                                        <tr>
+                                            <td><?php se($trails[$i], "name", "", true); ?></td>
+                                            <td><?php se($trails[$i], "country", "", true); ?></td>
+                                            <td><?php se($trails[$i], "difficulty", "", true); ?></td>
+                                            <td><?php echo date('m/d/Y', $trails[$i]["created"]); ?></td>
+                                            <td><a href="./trail.php?id=<?php se($trails[$i], "id"); ?>">View</a></td>
+                                        </tr>
                                     <?php endif ?>
                                 <?php endfor ?>
                             </tbody>
@@ -87,7 +87,7 @@ if (isset($_GET["id"])) {
                         <h2>Favorites (<?php echo count($favorites) ?>)</h2>
                     </div>
                     <div class="col-md-4 justify-content-end d-sm-flex">
-                        <?php if (count($favorites) !== 0 ) : ?><h6><a href="./favorites.php?id=<?php echo $id ?>">View all</a></h6><?php endif ?>
+                        <?php if (count($favorites) !== 0) : ?><h6><a href="./favorites.php?id=<?php echo $id ?>">View all</a></h6><?php endif ?>
                     </div>
                 </div>
                 <div class="row mt-4">
@@ -99,17 +99,19 @@ if (isset($_GET["id"])) {
                                 <th>Difficulty</th>
                                 <th>Added</th>
                                 <th>Link</th>
+                                <?php if ($is_own_profile || $is_admin) : ?><th>Actions</th><?php endif ?>
                             </thead>
                             <tbody>
-                                <?php for($i = 0; $i < 10; $i ++) : ?>
+                                <?php for ($i = 0; $i < 10; $i++) : ?>
                                     <?php if (array_key_exists($i, $favorites)) : ?>
-                                    <tr>
-                                        <td><?php se($favorites[$i], "name", "", true); ?></td>
-                                        <td><?php se($favorites[$i], "country", "", true); ?></td>
-                                        <td><?php se($favorites[$i], "difficulty", "", true); ?></td>
-                                        <td><?php echo date('m/d/Y', $favorites[$i]["created"]); ?></td>
-                                        <td><a href="./trail.php?id=<?php se($favorites[$i], "id"); ?>">View</a></td>
-                                    </tr>
+                                        <tr>
+                                            <td><?php se($favorites[$i], "name", "", true); ?></td>
+                                            <td><?php se($favorites[$i], "country", "", true); ?></td>
+                                            <td><?php se($favorites[$i], "difficulty", "", true); ?></td>
+                                            <td><?php echo date('m/d/Y', $favorites[$i]["created"]); ?></td>
+                                            <td><a href="./trail.php?id=<?php se($favorites[$i], "id"); ?>">View</a></td>
+                                            <?php if ($is_own_profile || $is_admin) : ?><td><a href="./delete_favorite.php?id=<?php se($favorites[$i], "f_id"); ?>">Remove</a></td><?php endif ?>
+                                        </tr>
                                     <?php endif ?>
                                 <?php endfor ?>
                             </tbody>

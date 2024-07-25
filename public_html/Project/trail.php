@@ -30,13 +30,13 @@ if (isset($_GET["id"])) {
         if (!$hasError) {
             // Call helper function to either add or delete trail from favorites
             if ($type == "add") {
-                if (add_favorite($user_id, $id)) {
+                if (add_favorite_by_trail_id($user_id, $id)) {
                     flash("Successfully added this trail to favorites!", "success");
                 } else {
                     flash("Error when adding this trail to favorites.", "danger");
                 }
             } else {
-                if (delete_favorite($user_id, $id)) {
+                if (delete_favorite_by_trail_id($user_id, $id)) {
                     flash("Successfully deleted this trail from favorites!", "success");
                 } else {
                     flash("Error when deleting this trail from favorites.", "danger");
