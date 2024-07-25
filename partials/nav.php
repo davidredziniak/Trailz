@@ -41,7 +41,16 @@ session_start();
             <ul>
                 <?php if (is_logged_in()) : ?>
                     <li class="nav-item"><a class="nav-item" href="<?php echo get_url('home.php'); ?>">Home</a></li>
-                    <li class="nav-item"><a class="nav-item" href="<?php echo get_url('profile.php'); ?>">Profile</a></li>
+                    <li class="dropdown" id="menuList">
+                        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" id="droplabel">
+                            Profile
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu" role="listbox" id="menuDropdowns">
+                            <a href="./profile.php?id=<?php echo get_user_id() ?>"><li class="dropdown-item">My Profile</li></a>
+                            <a href="<?php echo get_url('edit_profile.php'); ?>"><li class="dropdown-item">Edit Profile</li></a>
+                        </ul>
+                    </li>
                     <li class="dropdown" id="menuList">
                         <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" id="droplabel">
                             Trails
