@@ -58,6 +58,7 @@ else{
                                 <th>Difficulty</th>
                                 <th>Submitted</th>
                                 <th>Link</th>
+                                <?php if ($is_own_profile || $is_admin) : ?><th>Actions</th><?php endif ?>
                             </thead>
                             <tbody>
                                 <?php for ($i = 0; $i < 10; $i++) : ?>
@@ -68,6 +69,9 @@ else{
                                             <td><?php se($trails[$i], "difficulty", "", true); ?></td>
                                             <td><?php echo date('m/d/Y', $trails[$i]["created"]); ?></td>
                                             <td><a href="./trail.php?id=<?php se($trails[$i], "id"); ?>">View</a></td>
+                                            <?php if ($is_own_profile || $is_admin) : ?>
+                                                <td><a href="./delete_trail.php?id=<?php se($trails[$i], "id"); ?>">Delete</a></td>
+                                            <?php endif ?>
                                         </tr>
                                     <?php endif ?>
                                 <?php endfor ?>
@@ -110,7 +114,9 @@ else{
                                             <td><?php se($favorites[$i], "difficulty", "", true); ?></td>
                                             <td><?php echo date('m/d/Y', $favorites[$i]["created"]); ?></td>
                                             <td><a href="./trail.php?id=<?php se($favorites[$i], "id"); ?>">View</a></td>
-                                            <?php if ($is_own_profile || $is_admin) : ?><td><a href="./delete_favorite.php?id=<?php se($favorites[$i], "f_id"); ?>">Remove</a></td><?php endif ?>
+                                            <?php if ($is_own_profile || $is_admin) : ?>
+                                                <td><a href="./delete_favorite.php?id=<?php se($favorites[$i], "f_id"); ?>">Remove</a></td>
+                                            <?php endif ?>
                                         </tr>
                                     <?php endif ?>
                                 <?php endfor ?>
