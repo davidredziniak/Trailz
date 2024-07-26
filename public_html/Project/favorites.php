@@ -85,7 +85,7 @@ if (isset($_GET["find"])) {
 
         if (!$hasError) {
             $db = getDB();
-            $stmt = $db->prepare("SELECT id, name, city, country, length, difficulty, unix_timestamp(created) AS created, (3959 * acos(cos(radians(:lat)) * cos(radians(ST_X(`coord`))) * cos( radians(ST_Y(`coord`)) - radians(:long)) + sin(radians(:lat)) * sin(radians(ST_X(`coord`))))) AS distance FROM `Trails` HAVING distance <= :distance ORDER BY distance LIMIT " . intval($limit) . ";");
+            $stmt = $db->prepare("SELECT id, name, city, country, length, difficulty, (3959 * acos(cos(radians(:lat)) * cos(radians(ST_X(`coord`))) * cos( radians(ST_Y(`coord`)) - radians(:long)) + sin(radians(:lat)) * sin(radians(ST_X(`coord`))))) AS distance FROM `Trails` HAVING distance <= :distance ORDER BY distance LIMIT " . intval($limit) . ";");
             try {
                 $stmt->execute([":lat" => $lat, ":long" => $long, ":distance" => $radius]);
                 $r = $stmt->fetchAll();
@@ -166,7 +166,7 @@ if (isset($_GET["find"])) {
         }
 
         // Check if country is valid
-        if (!in_array($country, $countries)) {
+        if(!in_array($country, $countries)){
             $hasError = true;
             flash("Invalid country selection", "warning");
         }
@@ -194,7 +194,7 @@ if (isset($_GET["find"])) {
             }
 
             $db = getDB();
-            $stmt = $db->prepare("SELECT id, name, city, country, length, difficulty, unix_timestamp(created) AS created FROM `Trails` WHERE " . $query . " LIMIT " . intval($limit) . ";");
+            $stmt = $db->prepare("SELECT id, name, city, country, length, difficulty FROM `Trails` WHERE " . $query . " LIMIT " . intval($limit) . ";");
             try {
                 $stmt->execute();
                 $r = $stmt->fetchAll();
@@ -232,7 +232,7 @@ if (isset($_GET["find"])) {
                             <input type="radius" name="radius" id="radius" class="form-control" />
                         </div>
                         <div class="mb-3">
-                            <label for="limit" class="form-label">Results Limit:</label>
+                            <label for="limit" class="form-label">Limit:</label>
                             <input type="number" name="limit" id="limit" class="form-control" />
                         </div>
                         <button class="btn btn-primary" name="find" value="location" type="submit">Find</button>
@@ -509,7 +509,7 @@ if (isset($_GET["find"])) {
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="limit" class="form-label">Results Limit:</label>
+                            <label for="limit" class="form-label">Limit:</label>
                             <input type="number" name="limit" id="limit" class="form-control" />
                         </div>
                         <button class="btn btn-primary" name="find" value="other" type="submit">Find</button>
@@ -524,35 +524,31 @@ if (isset($_GET["find"])) {
                 <div class="container-lg mt-5 p-5 rounded-2" style="background-color: #ffffff;">
                     <h4>Trails</h4>
                     <hr>
-                    <table class="table">
-                        <thead>
-                            <th>Name</th>
-                            <th>Country</th>
-                            <th>Length (mi)</th>
-                            <th>Difficulty</th>
-                            <th>Added</th>
-                            <th>Link</th>
-                            <?php if (has_role("Admin") || is_trail_owner($trail['id'])) : ?><th>Actions</th><?php endif ?>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($result as $trail) : ?>
-                                <tr>
-                                    <td><?php se($trail, "name", "", true); ?></td>
-                                    <td><?php se($trail, "country", "", true); ?></td>
-                                    <td><?php se($trail, "length", "", true); ?></td>
-                                    <td><?php se($trail, "difficulty", "", true); ?></td>
-                                    <td><?php echo date('m/d/Y', $trail["created"]); ?></td>
-                                    <td><a href="./trail.php?id=<?php se($trail, "id"); ?>">View</a></td>
-                                    <?php if (has_role("Admin") || is_trail_owner($trail['id'])) : ?>
-                                        <td>
-                                            <?php echo '<a href="./edit_trail.php?id=' . $trail['id'] . '">Edit</a>'; ?>
-                                            <?php echo '<a href="./delete_trail.php?id=' . $trail['id'] . '">Delete</a>'; ?>
-                                        </td>
+                    <?php foreach ($result as $trail) : ?>
+                        <div class="row mt-1">
+                            <div class="col-md-8">
+                                <p>
+                                    <b><?php echo $trail['name']; ?></b>,
+                                    <?php echo $trail['country']; ?> -
+                                    <b>Length</b>: <?php echo $trail['length']; ?> mi -
+                                    <b>Difficulty</b>: <?php echo $trail['difficulty']; ?>
+                                    <?php if (array_key_exists("distance", $trail)) : ?>
+                                        - <b>Distance</b>: <?php echo number_format($trail['distance'], 2); ?> mi
                                     <?php endif; ?>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                                </p>
+                            </div>
+                            <div class="col-md-4 d-flex justify-content-end">
+                                <p>
+                                    <a href="./trail.php?id=<?php echo $trail['id'] ?>">View</a>
+                                    <?php if (has_role("Admin") || is_trail_owner($trail['id'])) : ?>
+                                        <?php echo '<a href="./edit_trail.php?id=' . $trail['id'] . '">Edit</a>'; ?>
+                                        <?php echo '<a href="./delete_trail.php?id=' . $trail['id'] . '">Delete</a>'; ?>
+                                    <?php endif; ?>
+                                </p>
+
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
@@ -640,7 +636,7 @@ if (isset($_GET["find"])) {
             }
 
             // Check if country is valid
-            if (!countries.includes(country)) {
+            if (!countries.includes(country)){
                 flash("Invalid country selected.", "warning");
                 return false;
             }
