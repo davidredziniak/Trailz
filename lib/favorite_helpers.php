@@ -70,3 +70,14 @@ function delete_favorite_by_id($favorite_id){
         return false;
     }
 }
+
+function delete_all_favorites($user_id){
+    $db = getDB();
+    $stmt = $db->prepare("DELETE FROM `User_Favorites` WHERE user_id=:user_id;");
+    try {
+        $stmt->execute([":user_id" => intval($user_id)]);
+        return true;
+    } catch (Exception $e){
+        return false;
+    }
+}

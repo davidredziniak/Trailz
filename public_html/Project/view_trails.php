@@ -166,7 +166,7 @@ if (isset($_GET["find"])) {
         }
 
         // Check if country is valid
-        if (!in_array($country, $countries)) {
+        if (!in_array($country, $countries) && $country !== "") {
             $hasError = true;
             flash("Invalid country selection", "warning");
         }
@@ -247,6 +247,7 @@ if (isset($_GET["find"])) {
                         <div class="mb-3">
                             <label for="country" class="form-label">Country:</label>
                             <select class="form-select" name="country" id="country">
+                                <option value="">Please choose</option>
                                 <option value="Afghanistan">Afghanistan</option>
                                 <option value="Aland Islands">Aland Islands</option>
                                 <option value="Albania">Albania</option>
@@ -627,12 +628,6 @@ if (isset($_GET["find"])) {
                 return false;
             }
 
-            // Check if length is valid (non negative)
-            if (length !== "" && parseFloat(length) <= 0) {
-                flash("Please enter a length greater than 0 miles.", "warning");
-                return false;
-            }
-
             // Check if difficulty selection is valid
             if (diff !== "" && diff !== "unsp" && diff != "easy" && diff != "beg" && diff != "int" && diff != "adv") {
                 flash("Invalid difficulty selection, please select a drop down option.", "warning");
@@ -640,7 +635,7 @@ if (isset($_GET["find"])) {
             }
 
             // Check if country is valid
-            if (!countries.includes(country)) {
+            if (!countries.includes(country) && country !== "") {
                 flash("Invalid country selected.", "warning");
                 return false;
             }
