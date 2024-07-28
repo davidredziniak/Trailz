@@ -47,7 +47,7 @@ session_start();
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu" role="listbox" id="menuDropdowns">
-                            <a href="./profile.php?id=<?php echo get_user_id() ?>"><li class="dropdown-item">My Profile</li></a>
+                            <a href="<?php echo get_url('profile.php'); ?>?id=<?php echo get_user_id() ?>"><li class="dropdown-item">My Profile</li></a>
                             <a href="<?php echo get_url('edit_profile.php'); ?>"><li class="dropdown-item">Edit Profile</li></a>
                         </ul>
                     </li>
