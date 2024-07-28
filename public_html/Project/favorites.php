@@ -2,127 +2,88 @@
 require_once(__DIR__ . "/../../partials/nav.php");
 // Check if user is logged in
 is_logged_in(true);
-$result = [];
 
-?>
-<?php
-if (isset($_GET["find"])) {
-    $difficulties = ["unsp", "easy", "beg", "int", "adv"];
-    $hasError = false;
-    $type = se($_GET, "find", null, false);
+// Check if ID is set and is a valid user
+if (isset($_GET["id"])) {
+    $id = intval(se($_GET, "id", 0, false));
+    is_valid_user($id, true);
 
-    // Check if query params are set
-    switch ($type) {
-        case "location":
-            if (!isset($_GET["lat"]) || !isset($_GET["long"]) || !isset($_GET["radius"])) {
-                flash("Latitude, longtitude or radius is not set.", "danger");
-                $hasError = true;
+    // Check if user is viewing their own profile
+    $is_own_profile = (get_user_id() == $id ? true : false);
+
+    $is_admin = has_role("Admin");
+
+    // Get user's details
+    $user = get_user_by_id($id);
+
+    if (isset($_GET["deleteall"])){
+        if ($is_own_profile || $is_admin){
+            if(delete_all_favorites($id)){
+                flash("Deleted all user's favorites.", "success");
             }
-            break;
-        case "other":
-            if (!isset($_GET["length"]) || !isset($_GET["difficulty"]) || !isset($_GET["country"])) {
-                flash("Length, country or difficulty is not set.", "danger");
-                $hasError = true;
-            }
-            break;
-        default:
-            flash("Search type is invalid.", "danger");
-            $hasError = true;
-    }
-
-    $limit = 10;
-
-    if (isset($_GET["limit"])) {
-        // Check if limit is valid
-        $user_limit = se($_GET, "limit", null, false);
-        if (!empty($user_limit)) {
-            $user_limit = intval($user_limit);
-            if ($user_limit > 100 || $user_limit < 1) {
-                flash("Limit needs to be in a range 1 to 100.", "danger");
-                $hasError = true;
-            } else {
-                $limit = $user_limit;
+            else{
+                flash("Failed to delete all favorites.", "danger");
             }
         }
     }
 
-    if ($type === "location" && !$hasError) {
-        $lat = se($_GET, "lat", null, false);
-        $long = se($_GET, "long", null, false);
-        $radius = se($_GET, "radius", null, false);
+    // Get user's favorite trails
+    $all_favorites = get_favorites_by_user_id($id);
+    
+    $result = $all_favorites;
 
-        if (empty($lat) || empty($long)) {
-            flash("Latitude and longitude must both be set.", "danger");
-            $hasError = true;
-        }
+    // Admin/User own profile Delete all favorites
 
-        if (empty($radius)) {
-            flash("Radius must be set.", "danger");
-            $hasError = true;
-        }
-
-        $radius = floatval($radius);
-        $lat = floatval($lat);
-        $long = floatval($long);
-
-        // Check radius
-        if ($radius <= 0 || $radius > 100) {
-            flash("Radius must be greater than 0 and less than 100 miles.", "danger");
-            $hasError = true;
-        }
-
-        // Check latitude
-        if (!is_valid_latitude($lat)) {
-            flash("Latitude must be valid. -90.00 to 90.00", "danger");
-            $hasError = true;
-        }
-
-        // Check longtitude
-        if (!is_valid_longtitude($long)) {
-            flash("Longitude must be valid. -90.00 to 90.00", "danger");
-            $hasError = true;
-        }
-
-        if (!$hasError) {
-            $db = getDB();
-            $stmt = $db->prepare("SELECT id, name, city, country, length, difficulty, unix_timestamp(created) AS created, (3959 * acos(cos(radians(:lat)) * cos(radians(ST_X(`coord`))) * cos( radians(ST_Y(`coord`)) - radians(:long)) + sin(radians(:lat)) * sin(radians(ST_X(`coord`))))) AS distance FROM `Trails` HAVING distance <= :distance ORDER BY distance LIMIT " . intval($limit) . ";");
-            try {
-                $stmt->execute([":lat" => $lat, ":long" => $long, ":distance" => $radius]);
-                $r = $stmt->fetchAll();
-                if ($r) {
-                    $result = $r;
-                } else {
-                    flash("No results available.", "danger");
-                }
-            } catch (Exception $e) {
-                flash("An unexpected error occurred when searching for trails.", "danger");
-            }
-        }
+    // Reset filters (to original full list)
+    if (isset($_GET["reset"])) {
+        unset($_GET["filter"]);
+        unset($_GET["limit"]);
+        unset($_GET["name"]);
+        unset($_GET["country"]);
+        unset($_GET["difficulty"]);
     }
 
-    if ($type === "other" && !$hasError) {
+    // Check if user is filtering results
+    if (isset($_GET["filter"])) {
         $countries = array("Afghanistan", "Aland Islands", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, The Democratic Republic of The", "Cook Islands", "Costa Rica", "Cote D'ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea-bissau", "Guyana", "Haiti", "Heard Island and Mcdonald Islands", "Holy See (Vatican City State)", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran, Islamic Republic of", "Iraq", "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica", "Japan", "Jersey", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, Democratic People's Republic of", "Korea, Republic of", "Kuwait", "Kyrgyzstan", "Lao People's Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya", "Liechtenstein", "Lithuania", "Luxembourg", "Macao", "Macedonia, The Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Moldova, Republic of", "Monaco", "Mongolia", "Montenegro", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Palestinian Territory, Occupied", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Helena", "Saint Kitts and Nevis", "Saint Lucia", "Saint Pierre and Miquelon", "Saint Vincent and The Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and The South Sandwich Islands", "Spain", "Sri Lanka", "Sudan", "Suriname", "Svalbard and Jan Mayen", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Timor-leste", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Viet Nam", "Virgin Islands, British", "Virgin Islands, U.S.", "Wallis and Futuna", "Western Sahara", "Yemen", "Zambia", "Zimbabwe");
+        $difficulties = ["unsp", "easy", "beg", "int", "adv"];
+        $hasError = false;
+        $limit = 10;
 
-        $length = se($_GET, "length", "", false);
+        if (isset($_GET["limit"])) {
+            // Check if limit is valid
+            $user_limit = se($_GET, "limit", null, false);
+            if (!empty($user_limit)) {
+                $user_limit = intval($user_limit);
+                if ($user_limit > 100 || $user_limit < 1) {
+                    flash("Limit needs to be in a range 1 to 100.", "danger");
+                    $hasError = true;
+                } else {
+                    $limit = $user_limit;
+                }
+            }
+        }
+
+        $name = se($_GET, "name", "", false);
         $country = se($_GET, "country", "", false);
         $diff = se($_GET, "difficulty", "", false);
-        $search_length = false;
+        $search_name = false;
         $search_country = false;
         $search_diff = false;
 
-        if (empty($length) && empty($country) && empty($diff)) {
+        if (empty($name) && empty($country) && empty($diff)) {
             $hasError = true;
-            flash("You must specify at least one field (length, country, or difficulty).", "warning");
+            flash("You must specify at least one field (name, country, or difficulty) to filter.", "warning");
         }
 
-        // Check if length is provided 
-        if (!empty($length)) {
-            $length = floatval($length);
-            if ($length <= 0 || $length > 100) {
+        // Check if name is provided 
+        if (!empty($name)) {
+            $name = trim($name);
+            if (strlen($name) <= 0 || strlen($name) > 50) {
                 $hasError = true;
-                flash("Length of the trails requested is invalid.", "danger");
+                flash("Name requested is invalid.", "danger");
             } else {
-                $search_length = true;
+                $search_name = true;
             }
         }
 
@@ -168,33 +129,27 @@ if (isset($_GET["find"])) {
         // Check if country is valid
         if (!in_array($country, $countries) && $country !== "") {
             $hasError = true;
-            flash("Invalid country selection", "warning");
+            flash("Invalid country selection.", "warning");
         }
 
-        // Build query
+        // Build filter query
         if (!$hasError) {
             $query = "";
 
+            if ($search_name) {
+                $query .= "AND name LIKE '%" . $name . "%'";
+            }
+
             if ($search_country) {
-                $query .= "country='" . $country . "'";
+                $query .= "AND country='" . $country . "'";
             }
 
             if ($search_diff) {
-                if (strlen($query) > 0) {
-                    $query .= " AND ";
-                }
-                $query .= "difficulty='" . $diff . "'";
-            }
-
-            if ($search_length) {
-                if (strlen($query) > 0) {
-                    $query .= " AND ";
-                }
-                $query .= "length <=" . $length . "";
+                $query .= "AND difficulty='" . $diff . "'";
             }
 
             $db = getDB();
-            $stmt = $db->prepare("SELECT id, name, city, country, length, difficulty, unix_timestamp(created) AS created FROM `Trails` WHERE " . $query . " LIMIT " . intval($limit) . ";");
+            $stmt = $db->prepare("SELECT t.id, t.name, t.country, t.length, t.difficulty, unix_timestamp(u.created) AS created, u.id AS f_id FROM `User_Favorites` AS u JOIN Trails AS t ON u.trail_id = t.id WHERE u.user_id='" . $id . "' " . $query . " LIMIT " . intval($limit) . ";");
             try {
                 $stmt->execute();
                 $r = $stmt->fetchAll();
@@ -208,44 +163,63 @@ if (isset($_GET["find"])) {
             }
         }
     }
+} else {
+    flash("There was no specific user ID set in the URL.", "warning");
+    die(header("Location: " . get_url("home.php")));
 }
+
 ?>
 
 <body class="bg-dark">
     <div class="container mt-5">
         <div class="row gx-3">
             <div class="col-md-6">
-                <div class="container-sm p-5 rounded-2" style="background-color: #ffffff;">
-                    <h4>By Location</h4>
-                    <hr>
-                    <form method="GET" onsubmit="return validate(this);">
-                        <div class="mb-3">
-                            <label for="lat" class="form-label">Latitude:</label>
-                            <input type="text" name="lat" id="lat" class="form-control" />
+                <div class="container-sm p-5 rounded-2 h-100" style="background-color: #ffffff;">
+                    <div class="row">
+                        <?php if ($is_own_profile || $is_admin) : ?>
+                            <div class="col-md-8">
+                        <?php else : ?>
+                            <div class="col-md-12">
+                        <?php endif ?>
+                            <h1><?php se($user, "username", "", true); ?>'s favorites (<?php echo count($all_favorites) ?>)</h1>
                         </div>
-                        <div class="mb-3">
-                            <label for="long" class="form-label">Longitude:</label>
-                            <input type="text" name="long" id="long" class="form-control" />
+                        <?php if ($is_own_profile || $is_admin) : ?>
+                        <div class="col-md-4">
+                            <form class="d-flex justify-content-end">
+                                <input type="hidden" name="id" value="<?php se($_GET, "id") ?>">
+                                <button class="btn btn-danger" name="deleteall" type="submit">Delete All</button>
+                            </form>
                         </div>
-                        <div class="mb-3">
-                            <label for="lat" class="form-label">Radius:</label>
-                            <input type="radius" name="radius" id="radius" class="form-control" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="limit" class="form-label">Results Limit:</label>
-                            <input type="number" name="limit" id="limit" class="form-control" />
-                        </div>
-                        <button class="btn btn-primary" name="find" value="location" type="submit">Find</button>
-                    </form>
+                        <?php endif ?>
+                    </div>
+                    <br>
+                    <p>
+                        Use the form on the right to filter through this user's favorites.
+                    </p>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="container-sm p-5 rounded-2" style="background-color: #ffffff;">
-                    <h4>By Specification</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>Filter</h4>
+                        </div>
+                        <div class="col-md-6">
+                            <form class="d-flex justify-content-end">
+                                <input type="hidden" name="id" value="<?php se($_GET, "id") ?>">
+                                <button class="btn btn-primary" name="reset" type="submit">Reset</button>
+                            </form>
+                        </div>
+                    </div>
                     <hr>
                     <form method="GET" onsubmit="return validate(this);">
-                        <div class="mb-3">
-                            <label for="country" class="form-label">Country:</label>
+                        <input type="hidden" name="id" value="<?php se($_GET, "id") ?>">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Name</span>
+                            <input type="text" id="name" class="form-control" name="name" placeholder="ex. Cheesequake" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Country</span>
                             <select class="form-select" name="country" id="country">
                                 <option value="">Please choose</option>
                                 <option value="Afghanistan">Afghanistan</option>
@@ -494,12 +468,8 @@ if (isset($_GET["find"])) {
                                 <option value="Zimbabwe">Zimbabwe</option>
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label for="length" class="form-label">Maximum Length:</label>
-                            <input type="number" name="length" id="length" class="form-control" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="difficulty" class="form-label">Difficulty:</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Difficulty</span>
                             <select class="form-select" name="difficulty" id="difficulty">
                                 <option value="">Please choose</option>
                                 <option value="unsp">Unspecified</option>
@@ -509,12 +479,13 @@ if (isset($_GET["find"])) {
                                 <option value="adv">Advanced</option>
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label for="limit" class="form-label">Results Limit:</label>
-                            <input type="number" name="limit" id="limit" class="form-control" />
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Filter Limit:</span>
+                            <input type="text" id="limit" class="form-control" name="limit" placeholder="Default: 10" aria-describedby="basic-addon1">
                         </div>
-                        <button class="btn btn-primary" name="find" value="other" type="submit">Find</button>
+                        <button class="btn btn-primary" name="filter" type="submit">Filter</button>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -523,37 +494,34 @@ if (isset($_GET["find"])) {
         <div class="container">
             <div class="col-md-12">
                 <div class="container-lg mt-5 p-5 rounded-2" style="background-color: #ffffff;">
-                    <h4>Trails</h4>
+                    <h4>Trails (<?php echo count($result) ?>)</h4>
                     <hr>
                     <table class="table">
-                        <thead>
-                            <th>Name</th>
-                            <th>Country</th>
-                            <th>Length (mi)</th>
-                            <th>Difficulty</th>
-                            <th>Added</th>
-                            <th>Link</th>
-                            <?php if (has_role("Admin") || is_trail_owner($trail['id'])) : ?><th>Actions</th><?php endif ?>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($result as $trail) : ?>
-                                <tr>
-                                    <td><?php se($trail, "name", "", true); ?></td>
-                                    <td><?php se($trail, "country", "", true); ?></td>
-                                    <td><?php se($trail, "length", "", true); ?></td>
-                                    <td><?php se($trail, "difficulty", "", true); ?></td>
-                                    <td><?php echo date('m/d/Y', $trail["created"]); ?></td>
-                                    <td><a href="./trail.php?id=<?php se($trail, "id"); ?>">View</a></td>
-                                    <?php if (has_role("Admin") || is_trail_owner($trail['id'])) : ?>
-                                        <td>
-                                            <?php echo '<a href="./edit_trail.php?id=' . $trail['id'] . '">Edit</a>'; ?>
-                                            <?php echo '<a href="./delete_trail.php?id=' . $trail['id'] . '">Delete</a>'; ?>
-                                        </td>
-                                    <?php endif; ?>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                            <thead>
+                                <th>Name</th>
+                                <th>Country</th>
+                                <th>Length (mi)</th>
+                                <th>Difficulty</th>
+                                <th>Added</th>
+                                <th>Link</th>
+                                <?php if ($is_own_profile || $is_admin) : ?><th>Actions</th><?php endif ?>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($result as $trail) : ?>
+                                    <tr>
+                                        <td><?php se($trail, "name", "", true); ?></td>
+                                        <td><?php se($trail, "country", "", true); ?></td>
+                                        <td><?php se($trail, "length", "", true); ?></td>
+                                        <td><?php se($trail, "difficulty", "", true); ?></td>
+                                        <td><?php echo date('m/d/Y', $trail["created"]); ?></td>
+                                        <td><a href="./trail.php?id=<?php se($trail, "id"); ?>">View</a></td>
+                                        <?php if ($is_own_profile || $is_admin) : ?>
+                                            <td><a href="./delete_favorite.php?id=<?php se($trail, "f_id"); ?>">Remove</a></td>
+                                        <?php endif ?>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
                 </div>
             </div>
         </div>
@@ -563,87 +531,50 @@ if (isset($_GET["find"])) {
     function validate(form) {
         const countries = ["Afghanistan", "Aland Islands", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, The Democratic Republic of The", "Cook Islands", "Costa Rica", "Cote D'ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea-bissau", "Guyana", "Haiti", "Heard Island and Mcdonald Islands", "Holy See (Vatican City State)", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran, Islamic Republic of", "Iraq", "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica", "Japan", "Jersey", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, Democratic People's Republic of", "Korea, Republic of", "Kuwait", "Kyrgyzstan", "Lao People's Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya", "Liechtenstein", "Lithuania", "Luxembourg", "Macao", "Macedonia, The Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Moldova, Republic of", "Monaco", "Mongolia", "Montenegro", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Palestinian Territory, Occupied", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Helena", "Saint Kitts and Nevis", "Saint Lucia", "Saint Pierre and Miquelon", "Saint Vincent and The Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and The South Sandwich Islands", "Spain", "Sri Lanka", "Sudan", "Suriname", "Svalbard and Jan Mayen", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Timor-leste", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Viet Nam", "Virgin Islands, British", "Virgin Islands, U.S.", "Wallis and Futuna", "Western Sahara", "Yemen", "Zambia", "Zimbabwe"];
 
-        if (form.find.value == "location") {
-            let lat = form.lat.value;
-            let long = form.long.value;
-            let radius = form.radius.value;
-            let limit = form.limit.value;
+        let name = form.name.value;
+        let country = form.country.value;
+        let diff = form.difficulty.value;
+        let limit = form.limit.value;
 
-            // Check if empty values
-            if (lat == "" || long == "" || radius == "") {
-                flash("You must enter latitude, longitude, and radius.", "warning");
-                return false;
-            }
-
-            // Check if specified limit is valid
-            if (limit !== "") {
-                limit = parseInt(limit);
-                if (limit <= 0 || limit > 100) {
-                    flash("Limit specified must be a number in the range 1-100.", "warning");
-                    return false;
-                }
-            }
-
-            // Check if latitude is valid using regex
-            if (!/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$/.test(lat)) {
-                flash("Latitude is invalid. Enter a value from -90.00 to 90.00", "warning");
-                return false;
-            }
-
-            // Check if longtitude is valid using regex
-            if (!/^[-]?([1-9]?\d(\.\d+)?|1[0-7]\d(\.\d+)?|180(\.0+)?)$/i.test(long)) {
-                flash("Longitude is invalid. Enter a value from -180.00 to 180.00", "warning");
-                return false;
-            }
-            return true;
-        } else if (form.find.value == "other") {
-            let country = form.country.value;
-            let length = form.length.value;
-            let diff = form.difficulty.value;
-            let limit = form.limit.value;
-
-            if (country == "" && length == "" && diff == "") {
-                flash("You must specify a field between country, max length or difficulty.", "warning");
-                return false;
-            }
-
-            // Check if specified limit is valid
-            if (limit !== "") {
-                limit = parseInt(limit);
-                if (limit <= 0 || limit > 100) {
-                    flash("Limit specified must be a number in the range 1-100.", "warning");
-                    return false;
-                }
-            }
-
-            // Check country length is valid
-            if (country.length > 50) {
-                flash("The length of the country should not be greater than 50 chars.", "warning");
-                return false;
-            }
-
-            // Check if length is valid (non negative)
-            if (length !== "" && parseFloat(length) <= 0) {
-                flash("Please enter a length greater than 0 miles.", "warning");
-                return false;
-            }
-
-            // Check if difficulty selection is valid
-            if (diff !== "" && diff !== "unsp" && diff != "easy" && diff != "beg" && diff != "int" && diff != "adv") {
-                flash("Invalid difficulty selection, please select a drop down option.", "warning");
-                return false;
-            }
-
-            // Check if country is valid
-            if (!countries.includes(country) && country !== "") {
-                flash("Invalid country selected.", "warning");
-                return false;
-            }
-
-            return true;
-        } else {
+        if (country == "" && name == "" && diff == "") {
+            flash("You must specify a field between country, max length or difficulty.", "warning");
             return false;
         }
+
+        // Check if specified limit is valid
+        if (limit !== "") {
+            limit = parseInt(limit);
+            if (limit <= 0 || limit > 100) {
+                flash("Limit specified must be a number in the range 1-100.", "warning");
+                return false;
+            }
+        }
+
+        // Check name length is valid
+        if (name.length > 50) {
+            flash("The length of the name should not be greater than 50 chars.", "warning");
+            return false;
+        }
+
+        // Check country length is valid
+        if (country.length > 50) {
+            flash("The length of the country should not be greater than 50 chars.", "warning");
+            return false;
+        }
+
+        // Check if difficulty selection is valid
+        if (diff !== "" && diff !== "unsp" && diff != "easy" && diff != "beg" && diff != "int" && diff != "adv") {
+            flash("Invalid difficulty selection, please select a drop down option.", "warning");
+            return false;
+        }
+
+        // Check if country is valid
+        if (!countries.includes(country) && country !== "") {
+            flash("Invalid country selected.", "warning");
+            return false;
+        }
+
+        return true;
     }
 </script>
 <?php

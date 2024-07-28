@@ -90,7 +90,7 @@ function get_user_by_id($id)
 
 function get_trails_by_user_id($id){
     $db = getDB();
-    $stmt = $db->prepare("SELECT t.id, t.name, t.country, t.difficulty, unix_timestamp(t.created) AS created FROM `User_Trails` AS u JOIN Trails AS t ON u.trail_id = t.id WHERE u.user_id=:id;");
+    $stmt = $db->prepare("SELECT t.id, t.name, t.country, t.length, t.difficulty, unix_timestamp(t.created) AS created FROM `User_Trails` AS u JOIN Trails AS t ON u.trail_id = t.id WHERE u.user_id=:id;");
     try {
         $stmt->execute([":id" => intval($id)]);
         $r = $stmt->fetchAll();
@@ -106,7 +106,7 @@ function get_trails_by_user_id($id){
 
 function get_favorites_by_user_id($id){
     $db = getDB();
-    $stmt = $db->prepare("SELECT t.id, t.name, t.country, t.difficulty, unix_timestamp(u.created) AS created, u.id AS f_id FROM `User_Favorites` AS u JOIN Trails AS t ON u.trail_id = t.id WHERE u.user_id=:id;");
+    $stmt = $db->prepare("SELECT t.id, t.name, t.country, t.length, t.difficulty, unix_timestamp(u.created) AS created, u.id AS f_id FROM `User_Favorites` AS u JOIN Trails AS t ON u.trail_id = t.id WHERE u.user_id=:id;");
     try {
         $stmt->execute([":id" => intval($id)]);
         $r = $stmt->fetchAll();

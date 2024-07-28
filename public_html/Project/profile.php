@@ -55,6 +55,7 @@ else{
                             <thead>
                                 <th>Name</th>
                                 <th>Country</th>
+                                <th?>Length (mi)</th>
                                 <th>Difficulty</th>
                                 <th>Submitted</th>
                                 <th>Link</th>
@@ -66,6 +67,7 @@ else{
                                         <tr>
                                             <td><?php se($trails[$i], "name", "", true); ?></td>
                                             <td><?php se($trails[$i], "country", "", true); ?></td>
+                                            <td><?php se($trails[$i], "length", "", true); ?></td>
                                             <td><?php se($trails[$i], "difficulty", "", true); ?></td>
                                             <td><?php echo date('m/d/Y', $trails[$i]["created"]); ?></td>
                                             <td><a href="./trail.php?id=<?php se($trails[$i], "id"); ?>">View</a></td>
@@ -100,6 +102,7 @@ else{
                             <thead>
                                 <th>Name</th>
                                 <th>Country</th>
+                                <th>Length (mi)</th>
                                 <th>Difficulty</th>
                                 <th>Added</th>
                                 <th>Link</th>
@@ -111,6 +114,7 @@ else{
                                         <tr>
                                             <td><?php se($favorites[$i], "name", "", true); ?></td>
                                             <td><?php se($favorites[$i], "country", "", true); ?></td>
+                                            <td><?php se($favorites[$i], "length", "", true); ?></td>
                                             <td><?php se($favorites[$i], "difficulty", "", true); ?></td>
                                             <td><?php echo date('m/d/Y', $favorites[$i]["created"]); ?></td>
                                             <td><a href="./trail.php?id=<?php se($favorites[$i], "id"); ?>">View</a></td>
