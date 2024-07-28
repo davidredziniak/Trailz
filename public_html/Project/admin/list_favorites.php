@@ -7,7 +7,19 @@ if (!has_role("Admin")) {
     die(header("Location: " . get_url("home.php")));
 }
 
-//handle the toggle first so select pulls fresh data
+//handle the deleteall first so select pulls fresh data
+if (isset($_POST["deleteall"])) {
+    $user_id = se($_POST, "user_id", "", false);
+    if (!empty($user_id)) {
+        if (delete_all_favorites($user_id)) {
+            flash("Successfully deleted all favorites for this user.", "success");
+        } else {
+            flash(var_export($e->errorInfo, true), "danger");
+        }
+    }
+}
+
+//handle the delete first so select pulls fresh data
 if (isset($_POST["delete"])) {
     $fav_id = se($_POST, "fav_id", "", false);
     if (!empty($fav_id)) {
@@ -137,6 +149,10 @@ try {
                                             <input type="hidden" name="trail" value="<?php se($_POST, "trail"); ?>" />
                                         <?php endif; ?>
                                         <input type="submit" name="delete" value="Delete" class="btn btn-primary" />
+                                        <?php if (isset($_POST["username"]) && !empty($_POST["username"])) : ?>
+                                            <input type="hidden" name="user_id" value="<?php se($favorite, 'user_id'); ?>" />
+                                            <input type="submit" name="deleteall" value="Delete All" class="btn btn-danger" />
+                                        <?php endif; ?>
                                     </form>
                                 </td>
                             </tr>
@@ -152,12 +168,6 @@ try {
         let username = form.username.value;
         let trailId = form.trail.value;
         let limit = form.limit.value;
-
-        // Check if empty values
-        if (username === "" && trailId === "") {
-            flash("You must enter username or trail ID for searching.", "warning");
-            return false;
-        }
 
         // Check if specified limit is valid
         if (limit !== "") {
@@ -175,7 +185,7 @@ try {
         }
 
         // Check if trail ID is valid
-        if (!/^[0-9]+$/.test(trailId)) {
+        if (!/^[0-9]+$/.test(trailId) && trailId !== "") {
             flash("The trail ID should consist of only numbers.", "warning");
             return false;
         }
