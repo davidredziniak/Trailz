@@ -90,3 +90,17 @@ function is_favorited($id){
 
     return false;
 }
+
+function get_number_of_favorites_by_trail_id($id){
+    $db = getDB();
+    $stmt = $db->prepare("SELECT count(id) AS count FROM `User_Favorites` WHERE trail_id=:id;");
+    try {
+        $stmt->execute([":id" => intval($id)]);
+        $r = $stmt->fetch();
+        if($r){
+            return $r["count"];
+        }
+    } catch (Exception $e) {
+        flash(". var_export($e, true) .", "danger");
+    }
+}
