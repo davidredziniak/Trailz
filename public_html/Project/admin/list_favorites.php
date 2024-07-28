@@ -121,8 +121,8 @@ try {
                         <?php foreach ($favorites as $favorite) : ?>
                             <tr>
                                 <td><?php se($favorite, "id"); ?></td>
-                                <td><?php se($favorite, "username"); ?></td>
-                                <td><?php se($favorite, "trail_id"); ?></td>
+                                <td><a href="../profile.php?id=<?php se($favorite, "user_id")?>"><?php se($favorite, "username"); ?></a></td>
+                                <td><a href="../trail.php?id=<?php se($favorite, "trail_id")?>"><?php se($favorite, "trail_id"); ?></a></td>
                                 <td><?php se($favorite, "trail_count"); ?></td>
                                 <td>
                                     <form method="POST">
