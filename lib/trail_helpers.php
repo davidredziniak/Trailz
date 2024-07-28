@@ -104,3 +104,17 @@ function get_number_of_favorites_by_trail_id($id){
         flash(". var_export($e, true) .", "danger");
     }
 }
+
+function get_number_of_not_favorites(){
+    $db = getDB();
+    $stmt = $db->prepare("SELECT count(a.id) as count FROM `Trails` as a WHERE a.id NOT IN (SELECT trail_id FROM `User_Favorites`);");
+    try {
+        $stmt->execute();
+        $r = $stmt->fetch();
+        if($r){
+            return $r["count"];
+        }
+    } catch (Exception $e) {
+        flash(". var_export($e, true) .", "danger");
+    }
+}

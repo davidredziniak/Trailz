@@ -78,6 +78,7 @@ session_start();
                             <a href="<?php echo get_url('admin/assign_roles.php'); ?>"><li class="dropdown-item">Assign Role</li></a>
                             <a href="<?php echo get_url('admin/fetch_trails.php'); ?>"><li class="dropdown-item">Fetch Trails</li></a>
                             <a href="<?php echo get_url('admin/list_favorites.php'); ?>"><li class="dropdown-item">List Favorites</li></a>
+                            <a href="<?php echo get_url('admin/list_unfavorited.php'); ?>"><li class="dropdown-item">List Unfavorited</li></a>
                         </ul>
                     </li>
                 <?php endif; ?>

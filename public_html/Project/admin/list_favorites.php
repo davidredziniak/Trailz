@@ -73,6 +73,7 @@ if (isset($_POST["limit"])) {
 }
 
 $query .= " ORDER BY uf.modified desc LIMIT $limit";
+echo $query;
 $db = getDB();
 $stmt = $db->prepare($query);
 $favorites = [];
