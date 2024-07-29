@@ -68,9 +68,9 @@ function toggle_favorite($user_id, $id){
         $r = $stmt->fetchAll();
 
         if($r){
-            delete_favorite_by_trail_id($user_id, $id);
+            return delete_favorite_by_trail_id($user_id, $id);
         } else {
-            add_favorite_by_trail_id($user_id, $id);
+            return add_favorite_by_trail_id($user_id, $id);
         }
     } catch (Exception $e){
         flash("An error has occured when toggling the User Favorites record.", "danger");
