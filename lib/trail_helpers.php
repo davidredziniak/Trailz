@@ -2,9 +2,9 @@
 
 /**
  * Passing $redirect as true will auto redirect when the trail ID passed does not exist.
- * The destination defaults to view_trails.php
+ * The destination defaults to find_trails.php
  */
-function is_valid_trail($id, $redirect = false, $destination = "view_trails.php")
+function is_valid_trail($id, $redirect = false, $destination = "find_trails.php")
 {
     $valid = false;
     $db = getDB();

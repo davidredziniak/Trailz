@@ -10,7 +10,7 @@ if (isset($_GET["id"])) {
     // Check if user has permissions to delete the trail
     if (!has_role("Admin") && !is_trail_owner($id)) {
         flash("You don't have permission to delete this trail.", "danger");
-        die(header("Location: " . get_url("view_trails.php")));
+        die(header("Location: " . get_url("find_trails.php")));
     } else {
         // Check if the trail is user submitted
         $db = getDB();
@@ -53,7 +53,7 @@ if (isset($_GET["id"])) {
         }
     }
 } else {
-    die(header("Location: " . get_url("view_trails.php")));
+    die(header("Location: " . get_url("find_trails.php")));
 }
 ?>
 <script>

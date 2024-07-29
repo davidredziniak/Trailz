@@ -57,8 +57,8 @@ session_start();
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu" role="listbox" id="menuDropdowns">
+                            <a href="<?php echo get_url('find_trails.php'); ?>"><li class="dropdown-item">Find</li></a>
                             <a href="<?php echo get_url('submit_trail.php'); ?>"><li class="dropdown-item">Submit</li></a>
-                            <a href="<?php echo get_url('view_trails.php'); ?>"><li class="dropdown-item">View List</li></a>
                         </ul>
                     </li>
                 <?php endif; ?>

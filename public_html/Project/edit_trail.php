@@ -9,7 +9,7 @@ if (isset($_GET["id"])) {
     // Check if user has permissions to edit the trail
     if (!has_role("Admin") && !is_trail_owner($id)) {
         flash("You don't have permission to edit this trail.", "danger");
-        die(header("Location: " . get_url("view_trails.php")));
+        die(header("Location: " . get_url("find_trails.php")));
     }
 
     $trail = get_trail_by_id($id);
@@ -167,7 +167,7 @@ if (isset($_GET["id"])) {
         }
     }
 } else {
-    die(header("Location: " . get_url("view_trails.php")));
+    die(header("Location: " . get_url("find_trails.php")));
 }
 ?>
 
