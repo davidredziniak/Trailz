@@ -46,7 +46,7 @@ else{
                         <h2>Submitted Trails (<?php echo count($trails) ?>)</h2>
                     </div>
                     <div class="col-md-4 justify-content-end d-sm-flex">
-                        <?php if (count($trails) !== 0) : ?><h6><a href="./submissions.php?id=<?php echo $id ?>">View all</a></h6><?php endif ?>
+                       
                     </div>
                 </div>
                 <div class="row mt-4">
