@@ -18,6 +18,24 @@ function get_number_of_favorites()
     }
 }
 
+function get_number_of_not_favorites()
+{
+    $db = getDB();
+    $stmt = $db->prepare("SELECT count(id) AS count FROM `User_Favorites`;");
+    try {
+        $stmt->execute();
+        $r = $stmt->fetch();
+        if($r){
+            return $r["count"];
+        }
+        else{
+            return 0;
+        }
+    } catch (Exception $e) {
+        flash(". var_export($e, true) .", "danger");
+    }
+}
+
 function is_user_favorite($user_id, $favorite_id)
 {
     $db = getDB();

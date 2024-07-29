@@ -485,7 +485,6 @@ if (isset($_GET["id"])) {
                         </div>
                         <button class="btn btn-primary" name="filter" type="submit">Filter</button>
                     </form>
-
                 </div>
             </div>
         </div>
