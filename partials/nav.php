@@ -49,6 +49,7 @@ session_start();
                         <ul class="dropdown-menu" role="listbox" id="menuDropdowns">
                             <a href="<?php echo get_url('profile.php'); ?>?id=<?php echo get_user_id() ?>"><li class="dropdown-item">My Profile</li></a>
                             <a href="<?php echo get_url('edit_profile.php'); ?>"><li class="dropdown-item">Edit Profile</li></a>
+                            <a href="<?php echo get_url('search.php'); ?>"><li class="dropdown-item">Search Users</li></a>
                         </ul>
                     </li>
                     <li class="dropdown" id="menuList">
