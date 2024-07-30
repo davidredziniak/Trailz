@@ -29,3 +29,7 @@
 **Implement a larger variety of countries**
 
 - PR: [#81](https://github.com/davidredziniak/dr475-IT202-452-M2024/pull/81)
+
+**Search page for user profiles**
+
+- PR: [#98](https://github.com/davidredziniak/dr475-IT202-452-M2024/pull/98)
