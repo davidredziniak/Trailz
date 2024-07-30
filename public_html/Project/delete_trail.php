@@ -10,7 +10,7 @@ if (isset($_GET["id"])) {
     // Check if user has permissions to delete the trail
     if (!has_role("Admin") && !is_trail_owner($id)) {
         flash("You don't have permission to delete this trail.", "danger");
-        die(header("Location: " . get_url("view_trails.php")));
+        die(header("Location: " . get_url("find_trails.php")));
     } else {
         // Check if the trail is user submitted
         $db = getDB();
@@ -19,6 +19,7 @@ if (isset($_GET["id"])) {
             $stmt->bindValue(":id", $id);
             $stmt->execute();
             $r = $stmt->fetch();
+
             // Delete User_Trails if it exists (Not API generated)
             if ($r) {
                 $stmt2 = $db->prepare("DELETE FROM `User_Trails` WHERE trail_id=:id;");
@@ -29,11 +30,20 @@ if (isset($_GET["id"])) {
                     flash("An unexpected error occurred when deleting the user_trails record.", "danger");
                 }
             }
+            
+            // Delete User_Favorites associations
+            $stmt3 = $db->prepare("DELETE FROM `User_Favorites` WHERE trail_id=:id;");
+            $stmt3->bindValue(":id", $id);
+            try {
+                $stmt3->execute();
+            } catch (Exception $e) {
+                flash("An unexpected error occurred when deleting the user_favorites records.", "danger");
+            }
 
             // Delete the Trails record
-            $stmt3 = $db->prepare("DELETE FROM `Trails` WHERE id=:id;");
+            $stmt4 = $db->prepare("DELETE FROM `Trails` WHERE id=:id;");
             try {
-                $stmt3->execute([":id" => $id]);
+                $stmt4->execute([":id" => $id]);
                 flash("Successfully deleted the trail.", "success");
             } catch (Exception $e) {
                 flash("An unexpected error occurred when deleting the trail, please try again", "danger");
@@ -43,7 +53,7 @@ if (isset($_GET["id"])) {
         }
     }
 } else {
-    die(header("Location: " . get_url("view_trails.php")));
+    die(header("Location: " . get_url("find_trails.php")));
 }
 ?>
 <script>

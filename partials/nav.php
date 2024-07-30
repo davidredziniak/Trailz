@@ -41,15 +41,24 @@ session_start();
             <ul>
                 <?php if (is_logged_in()) : ?>
                     <li class="nav-item"><a class="nav-item" href="<?php echo get_url('home.php'); ?>">Home</a></li>
-                    <li class="nav-item"><a class="nav-item" href="<?php echo get_url('profile.php'); ?>">Profile</a></li>
+                    <li class="dropdown" id="menuList">
+                        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" id="droplabel">
+                            Profile
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu" role="listbox" id="menuDropdowns">
+                            <a href="<?php echo get_url('profile.php'); ?>?id=<?php echo get_user_id() ?>"><li class="dropdown-item">My Profile</li></a>
+                            <a href="<?php echo get_url('edit_profile.php'); ?>"><li class="dropdown-item">Edit Profile</li></a>
+                        </ul>
+                    </li>
                     <li class="dropdown" id="menuList">
                         <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" id="droplabel">
                             Trails
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu" role="listbox" id="menuDropdowns">
+                            <a href="<?php echo get_url('find_trails.php'); ?>"><li class="dropdown-item">Find</li></a>
                             <a href="<?php echo get_url('submit_trail.php'); ?>"><li class="dropdown-item">Submit</li></a>
-                            <a href="<?php echo get_url('view_trails.php'); ?>"><li class="dropdown-item">View List</li></a>
                         </ul>
                     </li>
                 <?php endif; ?>
@@ -68,6 +77,9 @@ session_start();
                             <a href="<?php echo get_url('admin/list_roles.php'); ?>"><li class="dropdown-item">List Roles</li></a>
                             <a href="<?php echo get_url('admin/assign_roles.php'); ?>"><li class="dropdown-item">Assign Role</li></a>
                             <a href="<?php echo get_url('admin/fetch_trails.php'); ?>"><li class="dropdown-item">Fetch Trails</li></a>
+                            <a href="<?php echo get_url('admin/list_favorites.php'); ?>"><li class="dropdown-item">List Favorites</li></a>
+                            <a href="<?php echo get_url('admin/list_unfavorited.php'); ?>"><li class="dropdown-item">List Unfavorited Trails</li></a>
+                            <a href="<?php echo get_url('admin/assign_favorites.php'); ?>"><li class="dropdown-item">Assign Favorites</li></a>
                         </ul>
                     </li>
                 <?php endif; ?>

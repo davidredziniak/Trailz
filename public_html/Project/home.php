@@ -9,21 +9,29 @@ if (is_logged_in(true)) {
     function get_diff_html($difficulty){
         switch ($difficulty) {
             case "Easiest":
-                return '<div>Difficulty <span class="rating">★☆☆☆</span></div>';
+                return '<div>Difficulty <span class="rating">●○○○</span></div>';
                 break;
             case "Beginner":
-                return '<div>Difficulty <span class="rating">★★☆☆</span></div>';
+                return '<div>Difficulty <span class="rating">●●○○</span></div>';
                 break;
             case "Intermediate":
-                return '<div>Difficulty <span class="rating">★★★☆</span></div>';
+                return '<div>Difficulty <span class="rating">●●●○</span></div>';
                 break;
             case "Advanced":
-                return '<div>Difficulty <span class="rating">★★★★</span></div>';
+                return '<div>Difficulty <span class="rating">●●●●</span></div>';
                 break;
             default:
-                return '<div>Difficulty <span class="rating">☆☆☆☆</span></div>';
+                return '<div>Difficulty <span class="rating">○○○○</span></div>';
                 break;
         }
+    }
+}
+
+function get_image_url($thumb){
+    if (empty($thumb) || $thumb == null){
+        echo './images/placeholder.jpg';
+    } else {
+        echo $thumb;
     }
 }
 
@@ -38,10 +46,10 @@ if (is_logged_in(true)) {
         <div class="container mt-5 mb-4 p-5 rounded-2" style="background-color: #ffffff;">
             <div class="row ms-2">
                 <div class="reviews-top col-lg-12">
-                    <h1 class="mb-2"><b>Recently added Trails</b></h1>
+                    <h1 class="mb-2"><b>Recently added</b></h1>
                 </div>
             </div>
-            <?php if (count($trails) == 6) : ?>
+            <?php if (count($trails) == 12) : ?>
                 <div id="carousel-items" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-nav row">
                         <button class="page-link" type="button" data-bs-target="#carousel-items" data-bs-slide="prev">
@@ -58,8 +66,8 @@ if (is_logged_in(true)) {
                                     <div class="col-md-4">
                                         <a href="./trail.php?id=<?php se($trails[$i], "id", "", true) ?>" style="text-decoration: none;">
                                             <div class="card">
-                                                <div class="card-body" style="background-size: cover; background-image: url(<?php se($trails[$i], "thumbnail", "", true); ?>)">
-                                                </div>
+                                            <div class="card-body" style="background-size: cover; background-image: url( <?php get_image_url(se($trails[$i], "thumbnail", "", false)); ?>)">
+                                            </div>
                                                 <div class="card-footer">
                                                     <div><strong><?php se($trails[$i], "name", "", true); ?></strong></div>
                                                     <?php echo get_diff_html($trails[$i]["difficulty"]) ?>
@@ -76,7 +84,43 @@ if (is_logged_in(true)) {
                                     <div class="col-md-4">
                                         <a href="./trail.php?id=<?php se($trails[$i], "id", "", true) ?>" style="text-decoration: none;">
                                             <div class="card">
-                                                <div class="card-body" style="background-size: cover; background-image: url(<?php se($trails[$i], "thumbnail", "", true); ?>)">
+                                                <div class="card-body" style="background-size: cover; background-image: url( <?php get_image_url(se($trails[$i], "thumbnail", "", false)); ?>)">
+                                                </div>
+                                                <div class="card-footer">
+                                                    <div><strong><?php se($trails[$i], "name", "", true); ?></strong></div>
+                                                    <?php echo get_diff_html($trails[$i]["difficulty"]) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                <?php endfor; ?>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="row">
+                                <?php for ($i = 6; $i < 9; $i++) : ?>
+                                    <div class="col-md-4">
+                                        <a href="./trail.php?id=<?php se($trails[$i], "id", "", true) ?>" style="text-decoration: none;">
+                                            <div class="card">
+                                                <div class="card-body" style="background-size: cover; background-image: url( <?php get_image_url(se($trails[$i], "thumbnail", "", false)); ?>)">
+                                                </div>
+                                                <div class="card-footer">
+                                                    <div><strong><?php se($trails[$i], "name", "", true); ?></strong></div>
+                                                    <?php echo get_diff_html($trails[$i]["difficulty"]) ?>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                <?php endfor; ?>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="row">
+                                <?php for ($i = 9; $i < 12; $i++) : ?>
+                                    <div class="col-md-4">
+                                        <a href="./trail.php?id=<?php se($trails[$i], "id", "", true) ?>" style="text-decoration: none;">
+                                            <div class="card">
+                                                <div class="card-body" style="background-size: cover; background-image: url( <?php get_image_url(se($trails[$i], "thumbnail", "", false)); ?>)">
                                                 </div>
                                                 <div class="card-footer">
                                                     <div><strong><?php se($trails[$i], "name", "", true); ?></strong></div>
