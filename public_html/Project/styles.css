@@ -26,6 +26,7 @@ h4, h5, h6 {
 
 .header .logo h2 {
     color: #f24d25;
+    font-weight: 600;
 }
 
 .header .navbar {
@@ -103,6 +104,28 @@ input {
 .btn-primary {
     background-color: #d8441f !important;
     border-color: #ce3a15 !important;
+}
+
+.btn-primary:hover {
+    background-color: #892b13 !important;
+    border-color: #6e200d !important;
+}
+
+.btn-favorite {
+    background-color: #e3a409;
+    border-color: #cd9409;
+    color: white;
+}
+
+.btn-favorite:hover {
+    background-color: #906907;
+    border-color: #694c05;
+    color: white;
+}
+
+.link-in-button {
+    text-decoration: none;
+    color: white;
 }
 
 body {
@@ -211,5 +234,5 @@ body {
 }
 
 .rating {
-    color: #f3cf02;
+    color: #af0202;
 }

@@ -16,6 +16,8 @@ require(__DIR__ . "/user_helpers.php");
 require(__DIR__ . "/flash_messages.php");
 // Trail Helpers
 require(__DIR__ . "/trail_helpers.php");
+// Favorite Helpers
+require(__DIR__ . "/favorite_helpers.php");
 
 //duplicate email/username
 require(__DIR__ . "/duplicate_user_details.php");

@@ -2,9 +2,9 @@
 
 /**
  * Passing $redirect as true will auto redirect when the trail ID passed does not exist.
- * The destination defaults to view_trails.php
+ * The destination defaults to find_trails.php
  */
-function is_valid_trail($id, $redirect = false, $destination = "view_trails.php")
+function is_valid_trail($id, $redirect = false, $destination = "find_trails.php")
 {
     $valid = false;
     $db = getDB();
@@ -45,7 +45,7 @@ function get_trail_by_id($id)
 
 function get_latest_trails(){
     $db = getDB();
-    $query = "SELECT id, name, country, length, difficulty, thumbnail FROM `Trails` ORDER BY created DESC LIMIT 6";
+    $query = "SELECT id, name, country, length, difficulty, thumbnail FROM `Trails` ORDER BY created DESC LIMIT 12";
     $stmt = $db->prepare($query);
     try {
         $stmt->execute();
@@ -72,4 +72,49 @@ function is_trail_owner($id)
     }
 
     return false;
+}
+
+function is_favorited($id){
+    $user_id = get_user_id();
+    $db = getDB();
+    $stmt = $db->prepare("SELECT 1 FROM `User_Favorites` WHERE trail_id=:id AND user_id=:user_id LIMIT 1;");
+    try {
+        $stmt->execute([":id" => intval($id), ":user_id" => intval($user_id)]);
+        $r = $stmt->fetchAll();
+        if($r){
+            return true;
+        }
+    } catch (Exception $e) {
+        flash(". var_export($e, true) .", "danger");
+    }
+
+    return false;
+}
+
+function get_number_of_favorites_by_trail_id($id){
+    $db = getDB();
+    $stmt = $db->prepare("SELECT count(id) AS count FROM `User_Favorites` WHERE trail_id=:id;");
+    try {
+        $stmt->execute([":id" => intval($id)]);
+        $r = $stmt->fetch();
+        if($r){
+            return $r["count"];
+        }
+    } catch (Exception $e) {
+        flash(". var_export($e, true) .", "danger");
+    }
+}
+
+function get_number_of_not_favorites(){
+    $db = getDB();
+    $stmt = $db->prepare("SELECT count(a.id) as count FROM `Trails` as a WHERE a.id NOT IN (SELECT trail_id FROM `User_Favorites`);");
+    try {
+        $stmt->execute();
+        $r = $stmt->fetch();
+        if($r){
+            return $r["count"];
+        }
+    } catch (Exception $e) {
+        flash(". var_export($e, true) .", "danger");
+    }
 }

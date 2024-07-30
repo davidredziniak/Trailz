@@ -124,7 +124,6 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                         } else {
                             $_SESSION["user"]["roles"] = []; //no roles
                         }
-                        flash("Welcome, " . get_username());
                         die(header("Location: home.php"));
                     } else {
                         flash("Password is incorrect.", "danger");

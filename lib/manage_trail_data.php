@@ -11,7 +11,7 @@ function insert_trails_into_db($db, $trails)
             $stmt->execute([":name" => $trail["name"], ":description" => $trail["description"], ":city" => $trail["city"], ":region" => $trail["region"], ":country" => $trail["country"], ":lat" => $trail["lat"], ":long" => $trail["long"], ":length" => $trail["length"], ":difficulty" => $trail["difficulty"], ":features" => $trail["features"], ":api_id" => $trail["api_id"], ":thumbnail" => $trail["thumbnail"]]);
         } catch (Exception $e) {
             error_log(var_export($e, true));
-            flash("Error adding trails", "danger");
+            flash("Error adding trails" . var_export($e), "danger");
             break;
         }
     }
@@ -21,6 +21,9 @@ function insert_trails_into_db($db, $trails)
 
 function process_single_trail($trail)
 {
+    // Countries that have defined regions
+    $countries_no_swap = ["United States", "Canada", "United Kingdom"];
+
     // Process trail data
     $api_id = se($trail, "id", "", false);
     $name = se($trail, "name", "", false);
@@ -68,8 +71,16 @@ function process_single_trail($trail)
     $record["name"] = $name;
     $record["description"] = $desc;
     $record["city"] = $city;
-    $record["region"] = $region;
-    $record["country"] = $country;
+
+    // API does some weird stuff when country is not the US
+    if (!in_array($country, $countries_no_swap)){
+        $record["region"] = $country;
+        $record["country"] = $region;
+    } else {
+        $record["region"] = $region;
+        $record["country"] = $country;
+    }
+
     $record["lat"] = floatval($lat);
     $record["long"] = floatval($long);
     $record["length"] = floatval($length);
