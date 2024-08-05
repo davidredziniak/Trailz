@@ -15,7 +15,7 @@
 - Milestone 2
   - [Link](https://github.com/davidredziniak/dr475-IT202-452-M2024/blob/Milestone2/public_html/Project/milestone2.md)
 - Milestone 3
-  - [Link](https://github.com/davidredziniak/dr475-IT202-452-M2024/blob/Milestone2/public_html/Project/milestone2.md)
+  - [Link](https://github.com/davidredziniak/dr475-IT202-452-M2024/blob/Milestone3/public_html/Project/milestone3.md)
 - Demo Link
   - https://www.youtube.com/watch?v=61q207arUTE
   
