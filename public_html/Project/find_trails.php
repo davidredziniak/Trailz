@@ -537,7 +537,7 @@ if (isset($_GET["find"])) {
                             <?php endif ?>
                             <th>Added</th>
                             <th>Link</th>
-                            <?php if (has_role("Admin") || is_trail_owner($trail['id'])) : ?><th>Actions</th><?php endif ?>
+                            <th>Actions</th>
                         </thead>
                         <tbody>
                             <?php foreach ($result as $trail) : ?>
